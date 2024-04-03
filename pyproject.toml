@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "device-data-integrity-system"
+version = "0.1.0"
+description = ""
+authors = ["ilija <ilijapet@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12.2"
+cryptography = "^42.0.5"
+pycryptodome = "^3.20.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

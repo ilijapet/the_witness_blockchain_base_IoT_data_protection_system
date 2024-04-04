@@ -7,13 +7,12 @@ from datetime import datetime
 
 #TODO: add lgger
 
+#  To be used by the sender
 def generate_hmac(key, message, device_id, timestamp=None):
     """
     Generates HMAC for the given message using the provided key.
     """
     # Convert key and message to bytes if they are strings
-
-
     if isinstance(key, str):
         key = key.encode('utf-8')
     if isinstance(message, str):
@@ -26,8 +25,6 @@ def generate_hmac(key, message, device_id, timestamp=None):
     # Add timestamp to the message
     if not timestamp: 
         timestamp = str(int(time.time())).encode('utf-8')
-    print("timestamp", timestamp)
-    print(f"timestamp{timestamp_to_date(int(timestamp))}")
     message_with_timestamp = message + timestamp + device_id
     
     # Generate HMAC using SHA-256 hash function
@@ -35,6 +32,8 @@ def generate_hmac(key, message, device_id, timestamp=None):
     
     return hmac_digest, message_with_timestamp
 
+
+#  To be used by the receiver
 def verify_hmac(key, message_with_timestamp, hmac_digest):
     """
     Verifies the authenticity of the message using the provided HMAC digest and key.
@@ -52,6 +51,7 @@ def verify_hmac(key, message_with_timestamp, hmac_digest):
     # Compare the generated HMAC with the received HMAC digest
     return hmac.compare_digest(generated_hmac, hmac_digest), message, timestamp, device_id
 
+# Utility functions
 def timestamp_to_date(timestamp):
     # Convert timestamp to datetime object
     dt_object = datetime.fromtimestamp(int(timestamp))
@@ -64,16 +64,13 @@ def keccak256(data):
     return keccak_hash.digest()
 
 
-
-
-
 if __name__ == "__main__":
 
     key = os.urandom(32)  # Generate a random key of 32 bytes (256 bits)
     print(f"Key: {key.hex()}")
 
     # Example usage
-    plaintext = b'Ilija care mogu da ti puse kare'
+    plaintext = b'probaj nesto pristojno'
     hash_output = keccak256(plaintext)
     print(f"Hash output: {hash_output.hex()}")
     device_id = "10"

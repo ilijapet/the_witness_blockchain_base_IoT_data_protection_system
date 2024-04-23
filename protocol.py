@@ -44,78 +44,51 @@ def verify_signature(message, signature, public_key):
 
 # Main function to simulate the protocol
 def main():
-    # Generate key pairs for nodes A, B, and C
-    private_key_a, public_key_a = generate_key_pair()
-    private_key_b, public_key_b = generate_key_pair()
-    private_key_c, public_key_c = generate_key_pair()
+    # Generate key pairs for nodes IoT device, Django, and Cartesi backend
+    private_key_iot, public_key_iot = generate_key_pair()
+    private_key_django, public_key_django = generate_key_pair()
+    private_key_cartesi, public_key_cartesi = generate_key_pair()
     private_key_fake, public_key_fake = generate_key_pair()
 
-    # Simulate message transmission from A to C via B
-    message = b"This is a secret message from Node A to Node C via Node B"
+    # Simulate message transmission from IoT to Cartesi via Django
+    message = b"Odometar: 123456km"
 
-    # Node A signs the message
-    signature_a = sign_message(message, private_key_a)
-    # signature_a = sign_message(message, private_key_fake)
+    # IoT device encrypts the message with  Cartesi's public key (to preserve confidentiality and 
+    # integrity will passing over Django server)
+    encrypted_message = encrypt_message(message, public_key_cartesi)
 
-    # Node A encrypts the message with Node C's public key
-    encrypted_message = encrypt_message(message, public_key_c)
+    # IoT device (in later more realistic phase mobile phone connected to IoD device or service software when user goes 
+    # for regular car check up) signs the encrypted message
+    signature_a = sign_message(encrypted_message, private_key_iot)
 
-    # Node A sends the encrypted message and the digital signature to Node B
-    # In a real scenario, this step would involve network communication
+    # IoT device sends the encrypted message and the digital signature to Django backend server
     received_encrypted_message = encrypted_message
     received_signature_a = signature_a
 
+    # Django server verifies the digital signature using IoT public key
+    is_signature_valid_a = verify_signature(received_encrypted_message, received_signature_a, public_key_iot)
 
- 
-    # Node B signs the received encrypted message
-    signature_b = sign_message(received_encrypted_message, private_key_b)
+    # If everything goes well
+    if is_signature_valid_a:
+        # Django signs the received encrypted message and submit tx (pay tx fee) to Cartesi backend
+        signature_b = sign_message(received_encrypted_message, private_key_django)
 
-        # Node B forwards the encrypted message and its signature to Node C
-    # In a real scenario, this step would involve network communication
-    received_encrypted_message_c = received_encrypted_message
-    received_signature_b = signature_b
+        # Django forwards the encrypted message via tx submitted to blockchain and its signature to Cartesi backend
+        received_signature_b = signature_b
 
-    # Node C verifies the digital signature using Node B's public key
-    is_signature_valid_b = verify_signature(received_encrypted_message_c, received_signature_b, public_key_b)
-    if is_signature_valid_b:
-        # Node C decrypts the message using its private key
-        decrypted_message = decrypt_message(received_encrypted_message_c, private_key_c)
-
-        # Node C verifies the digital signature using Node A's public key
-        is_signature_valid_a = verify_signature(decrypted_message, received_signature_a, public_key_a)
-        if is_signature_valid_a:
+        # Cartesi backend verifies the digital signature using Django abckend public key
+        is_signature_valid_b = verify_signature(received_encrypted_message, received_signature_b, public_key_django)
+        # If message is comming from Django backend
+        if is_signature_valid_b:
+            # Cartesi decrypts the message using its own private key
+            decrypted_message = decrypt_message(received_encrypted_message, private_key_cartesi)
             print("Message from Node A to Node C via Node B:", decrypted_message.decode())
-            print("Signature verification (Node B): Valid")
             print("Signature verification (Node A): Valid")
+            print("Signature verification (Node B): Valid")
         else:
-            print("Signature verification (Node A): Invalid")
+            print("Signature verification (Node B): Invalid")
     else:
-        print("Signature verification (Node B): Invalid")
+        print("Signature verification (Node A): Invalid")
 
 if __name__ == "__main__":
     main()
-
-
-
-    # TODO: add Node B verifies the digital signature using Node A's public key
-
-# Generate Public-Private Key Pairs:
-# Generate public-private key pairs for Node A, Node B, and Node C.
-
-# Message Transmission from A to C via B:
-# Node A:
-# Generate a message.
-# Sign the message using its private key.
-# Encrypt the signed message using Node C's public key.
-# Send the encrypted message and the digital signature to Node B.
-
-# Node B:
-# Receive the encrypted message and the digital signature from Node A.
-# Verify the digital signature using Node A's public key.
-# Forward the encrypted message to Node C.
-
-# Node C:
-# Receive the encrypted message from Node B.
-# Decrypt the message using its private key.
-# Verify the digital signature using Node A's public key.
-# If the signature is valid, process the message.

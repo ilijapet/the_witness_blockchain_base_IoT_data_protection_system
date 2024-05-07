@@ -11,7 +11,7 @@ Project Summary
 
 Main goal of this project is to bring the power of blockchain and cryptography to the world of IoT devices and in this way secure on-device data integrity.
 
-Problem statement: The current state of affairs reveals that data on IoT devices is primarily safeguarded by promises made by device producers and, at best, by policy documents, rather than by robust data protection technologies. The frequency of these promises being broken has led us to recognize the necessity for a novel approach to addressing the issue of device data integrity.
+The current state of affairs reveals that data on IoT devices is primarily safeguarded by promises made by device producers and, at best, by policy documents, rather than by robust data protection technologies. The frequency of these promises being broken has led us to recognize the necessity for a novel approach to addressing the issue of device data integrity.
 
 Here we are proposing a new solution that places greater emphasis on cryptographic and blockchain guarantees to establish and ensure user trust in data, as opposed to relying on the weak assurances provided by entities whose interests often diverge from those of the users. Even with the best intentions from a company's perspective, the potential for malicious actors to exploit vulnerabilities remains a significant concern.
 

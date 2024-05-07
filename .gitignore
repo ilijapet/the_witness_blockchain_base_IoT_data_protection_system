@@ -1,6 +1,7 @@
 
 photos/
 README_DEV.md
+diary.md
 poetry.lock
 **/.env
 # Backup files

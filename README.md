@@ -1,22 +1,99 @@
-Name: Device data integrity system
+Author:
+Ilija Petronijevic
 
-Project overview
+Email:
+ilijapet@gmail.com
 
-Main goal of this project is to bring power of blockchain and cryptography to the world of IoT devices and on this way secure on-device data integrity.
-Problem statement: The current state of affairs reveals that data on IoT devices is primarily safeguarded by promises made by device producers and, at best, by policy documents, rather than by robust data protection technologies. The frequency of these promises being broken has led us to recognize the necessity for a novel approach to addressing the issue of device data integrity. Here we are proposing new solution that places greater emphasis on cryptographic and blockchain guarantees to establish and ensure user trust in data, as opposed to relying on the weak assurances provided by entities whose interests often diverge from those of the users. Even with the best intentions from a company's perspective, the potential for malicious actors to exploit vulnerabilities remains a significant concern.
-Here is an example: consider a modern car as an IoT device. Users often face uncertainty regarding the reliability of the mileage displayed on the dashboard. How can they be certain that the odometer reading has not been tampered with? If tampering has occurred, the user may unknowingly overpay for a car, effectively purchasing an older vehicle under the guise of a new one. Moreover, how can users trust that any statistics displayed about the car's performance (average gas spend etc.) are accurate and reflect genuine usage rather than manipulation? Presently, there exists no foolproof method to guarantee data integrity in such scenarios. Users must rely on trust in the seller or manufacturer leaving them vulnerable to potential deceit. As devices around us proliferate and become increasingly integrated in our everyday life ensuring the reliability of the data they contain becomes paramount. This project intend to experiment and demonstrate how blockchain and cryptography can address this challenge.
+Title:
+The Witness: blockchain based device data protection system
 
-\*We understand IoT like everything from smart houses, smart phones, wearables, infrastructure components, industrial machinery to car and almost anything in between plugged on internet.
-\*\* on car privacy by Mozilla foundation: https://foundation.mozilla.org/en/privacynotincluded/articles/its-official-cars-are-the-worst-product-category-we-have-ever-reviewed-for-privacy/
+Project Summary
 
-Scope & Methodology
+Main goal of this project is to bring the power of blockchain and cryptography to the world of IoT devices and in this way secure on-device data integrity.
 
-This project will develop proof of concept with 4 basic interconnected elements. First element will be many mock IoT device working in parallel. This piece of code will play the role of device which generator data during the usage and submitting them to server we called collector. Collector (Djanot REST) will be used to create transaction and in the name of device to submit to blockchain interface contracts. Then Cartesi backend will listen for events and process different device inputs and assign to specific company, device ID and value. And basically in certain intervals IoT devices will submit data to collector, from there to blockchain and then to Cartesi Dapp backend. And this is flow for writing. Now was second flow we have confirm data integrity flow. In this flow user will have ability to interact with his IoT device from frontend dashboard. He can request reading from IoT device about certain data for certain month. IoT device will submit to frontend actual data from machine. Then in second step frontend will query Cartsi Dapp backend for that vehicle id and encrypted value and compare with values he got from IoT device. If they are the same then data integrity is preserved. And in case they are different we can confirm that someobody tapered with data.
+Problem statement: The current state of affairs reveals that data on IoT devices is primarily safeguarded by promises made by device producers and, at best, by policy documents, rather than by robust data protection technologies. The frequency of these promises being broken has led us to recognize the necessity for a novel approach to addressing the issue of device data integrity.
 
-Expected Deliverables
+Here we are proposing a new solution that places greater emphasis on cryptographic and blockchain guarantees to establish and ensure user trust in data, as opposed to relying on the weak assurances provided by entities whose interests often diverge from those of the users. Even with the best intentions from a company's perspective, the potential for malicious actors to exploit vulnerabilities remains a significant concern.
 
-Milestones & Timeline
+Example: consider a modern car as an IoT device. Users often face uncertainty regarding the reliability of the mileage displayed on the dashboard. Question is how can they be certain that the odometer reading has not been tampered with? If tampering has occurred, the user may unknowingly overpay for a car, effectively purchasing an older vehicle under the guise of a new one. Moreover, how can users trust that any statistics displayed about the car's performance (average gas spend etc.) are accurate and reflect genuine usage rather than manipulation? Presently, there exists no foolproof method to guarantee data integrity in such scenarios. Users must rely on trust in the seller or manufacturer leaving them vulnerable to potential deceit. Examples: 1 2
 
-One validator can be run by car company. Another can be run by organization of BWN owner association and then third by tech savvy independent users. Where actually community of producers and owners can together ensure data integrity of all vehicles of that brand.
+As devices around us proliferate and become increasingly integrated in our everyday life ensuring the reliability of the data they contain becomes paramount. This project intends to experiment and demonstrate how blockchain and cryptography can address some of those challenges.
 
-Privacy: how date never to go from device?
+Unique value proposition: we believe that using the Cartesi backend will allow us to build more complex data analytics compared to what is currently available and possible within EVM. In the first phase we will focus on preserving data integrity on devices as well as providing anonymized device performance statistics. In scenarios where we feed huge amounts of anonymized data generated by device into Cartesi backend we will need to rely on the rich Python ecosystem of data analytic libraries to digest all that data and to transform into insights valuable for our end user. For example information about real performance of devices over the time (weak or strong elements, common malfunctions), verifiable carbon footprint and similar.
+
+- We understand IoT like everything from smart houses, smart phones, wearables, infrastructure components, industrial machinery to cars and almost anything in between plugged on the internet.
+  \*\* On car privacy by Mozilla foundation
+
+Scope & Methodology:
+
+This project will be developed in two phases:
+
+In the first phase (proposal we are submitting here) we will develop front-end, backend, Cartesi backend for data ingestion and mock IoT devices for generating data. Once all this is in place and fully functional we plan to move to the second phase of the project where we will plug real devices (in our example car via bluetooth) and read odometer data over mobile phones. Sign tx on mobile and submit to a smart contract which then can forward information to Cartesi (avoiding need for Django backend entirely). Also in the second phase we plan to experiment with account abstraction as a layer between Cartesi smart contracts and mobile phones. Where we can use account abstraction to cover tx cost (funded by the company) instead of the user paying for submitted tx on-chain over his mobile phone (this is the second phase of the project and it is not part of this grant proposal. We are exposing this idea here just to provide a more comprehensive picture of the overall direction of further development of this project).
+
+As we mentioned earlier inside this project phase we will build 4 basic components: 1) Cartesi Dapp backend for processing inputs and maintain state of the IoT device. 2) Django REST backend which will receive data inputs from IoT devices and sign transaction to be submitted to blockchain (and then via blockchain further to Cartesi Dappp backend). This Django REST backend will also be used to serve 3) React frontend with necessary information. 4) Then we will build mock IoT devices to be used to generate data instead of real IoT devices and to feed that data into the Django REST backend. Also this mock IoT devices will be used in data verification processes implemented as processes between IoT device, frontend and Cartesi backend.
+
+Basic underlying cryptographic protocol
+
+\*Early draft version of Python code implementation of this protocol can be found with explanations in following github repo:
+https://github.com/ilijapet/device_data_integrity_system/blob/main/protocol.py
+
+In this phase we want to ensure following characteristics of communication between 3 elements: IoT device, Django Backend and Cartesi backend:
+
+1. IoT Device > Django backend relation: In this relation we should preserve confidentiality, data integrity and confirm authenticity. Django should know that data is coming from the correct IoT device but at the same time it should not be able to see raw data as well as not to temper with received data.
+
+2. Django backend > Cartesi backend relation: In this relation we need to confirm only authenticity. On the Cartesi side and in this relation alone we need to confirm only if a message is coming from the Django server.
+
+3. Cartesi backend - IoT device relation: Lastly we have authenticity, confidentiality and integrity between IoT device and Cartesi. We need to know that the message originates from an expected IoT device (authenticity), that the message is in integral form (integrity) and that data is in encrypted form (confidentiality).
+
+To achieved this described properties we will implement following steps:
+
+Generate public-private key pairs for IoT device, Django and Catesi backend
+Store public key from IoT device on Django server and associate with IoT device ID.
+Store public key from IoT device on Cartesi server and associate with IoT device ID
+Store public key of Cartesi server on IoT device
+
+Write flow:
+IoT device
+
+IoT device generate data
+Encrypt with Cartesi backend public key to preserve confidentiality of original data while passing through Django backend
+Sign encrypted data with IoT private keys
+Send encrypted message and digital signature to django backend
+
+Django backend
+
+Django backend receive encrypted message and digital signature from IoT device
+By using this two values and IoT public key verify signature (confirmation about source of data)
+Submit tx and send encrypted message and IoT signature to Cartesi backend
+
+Cartesi backend
+
+Cartesi backend receive encrypted message and signature
+Cartesi verify via encrypted message, signature and Django public key that message is indeed coming from Django backend
+If that’s ok, then it takes an encrypted message and its own private key and decrypts the message, getting in return plain odometer data from the IoT device.
+In last step update state in database related to that IoT device and do some data analytics
+
+Verification flow:
+User login into his account to check data integrity of his IoT device
+Connect to IoT device via bluetooth (mobile app or web dashboard from laptop) to read current odometer data (in out case mock IoT device)
+Send request for data to Cartesi backend
+Cartesi backend response to frontend request with data generated in past at certain point in time representing state of odometer (in our current example)
+App compare, return false if data are different or true in case data integrity is preserved
+
+Tech stack for this phase of project will be: React, Django REST, web3.py, Cartesi rollups package, Docker, Github, Github action, Git and supporting Python cryptographic and other libraries (pycryptodome, crypto or similar), Cartesi Python library.
+
+\*As we mentioned earlier in phase two of this project (once this basic Proof of concept is developed) we will use a mobile phone connected to ELD (plugged in car or truck) to read data from odometer and to encrypt and send to backend. What means any time a user connects to ELD via bluetooth number of kilometres in the backend database will be updated. Beside also we can envision scenarios where any time a car is brought for a service, service will plug diagnostic software and automatically update the database on Cartesi backend for that concrete vehicle and update data.
+
+Value proposition for end users:
+Device data integrity. Users know that identity (as data about device usage) are uncompromised. Which means he/she doesn't buy a device as easily manipulable black box. But instead in original shape and with data integrity fully preserved representing real history of device usage.
+
+Value proposition for companies and end users:
+Anonymized device performance statistic. Anonymized and verifiable statistics about device performance over the time. What means for example tracking malfunctions per mileage passed with that model of car. And do some backend data analytics to get reliable and useful information about device quality (here is Cartesi distinctive difference comes into play because it allow us to do more sophisticated data analytics on backend then Solidity and EVM)
+
+And then the third target group can be insurance companies. But this involves monitoring of concrete and known users and we should approach this topic with huge attention to details.
+
+Two possible basic incentives models for different stakeholders to become validators:
+
+Data integrity as service: where we provide a network of validators and full software solutions to the companies powered by Cartesi The Witness system. And they pay small subscriptions per device or company to protect data integrity on their devices.
+
+Second solution could be that a company or industrial branch organises their own network of validators supported by an interested user organisations or even customer protection organisations (who can potentially be interested in) and create a network of node validators to monitor data integrity on their own vehicles and other IoT devices.

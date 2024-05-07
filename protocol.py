@@ -81,6 +81,8 @@ def main():
         # If message is comming from Django backend
         if is_signature_valid_b:
             # Cartesi decrypts the message using its own private key
+            # TODO: here on this point we also need to verifay that encrypted message coming from IoT and that is not tampered with
+            # currently this is not implemented
             decrypted_message = decrypt_message(received_encrypted_message, private_key_cartesi)
             print("Message from Node A to Node C via Node B:", decrypted_message.decode())
             print("Signature verification (Node A): Valid")

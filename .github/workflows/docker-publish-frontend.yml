@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Backend Docker image
-        run: docker build -f ./cartesi_frontend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest
+        run: docker build -f ./cartesi_frontend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest .
 
       - name: Push Backend Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest

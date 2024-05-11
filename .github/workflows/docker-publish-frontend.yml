@@ -23,7 +23,7 @@ jobs:
 
       - name: Check for changes, build and push to Docker hub
         run: |
-          if git diff --quiet --exit-code cartesi_frontend; then
+          if git diff --quiet --exit-code HEAD^ HEAD ./cartesi_frontend; then
             echo "No changes in folder, skipping Docker build."
             exit 0
           else

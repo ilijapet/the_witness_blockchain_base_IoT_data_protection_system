@@ -1,4 +1,4 @@
-name: Docker Publish frontend
+name: Docker Publish Django backend
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push-frontend:
+  build-and-push-django-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -22,12 +22,11 @@ jobs:
 
       - name: Check for changes, build and push to Docker hub
         run: |
-          if git diff --quiet --exit-code HEAD^ HEAD ./cartesi_frontend; then
+          if git diff --quiet --exit-code HEAD^ HEAD ./backend; then
             echo "No changes in folder, skipping Docker build."
             exit 0
           else
             echo "Changes detected in folder, building Docker image."
-            # Add your Docker build command here
-            docker build -f ./cartesi_frontend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest ./cartesi_frontend
-            docker push ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest
+            docker build -f ./backend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/django_cartesi_backend:latest ./django_cartesi_backend
+            docker push ${{ secrets.DOCKER_USERNAME }}/django_cartesi_backend:latest
           fi

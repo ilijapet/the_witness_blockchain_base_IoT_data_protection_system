@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
-      paths:
-        - 'cartesi_frontend/**'
-        - 'backend/**'
+    paths:
+      - "cartesi_frontend/**"
+      - "backend/**"
 
 jobs:
   build-and-push-frontend:

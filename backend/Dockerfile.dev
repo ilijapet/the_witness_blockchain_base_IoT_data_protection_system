@@ -15,7 +15,7 @@ ENV PYTHONUNBUFFERED 1
 RUN set -xe \
     && apt update \
     && apt install -y --no-install-recommends build-essential \
-    && pip install virtualenvwrapper poetry==1.4.2 \
+    && pip install virtualenvwrapper poetry==1.8.2 \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 

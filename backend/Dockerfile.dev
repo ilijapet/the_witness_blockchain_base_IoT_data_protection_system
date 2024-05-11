@@ -27,3 +27,6 @@ RUN poetry install
 
 # Copy project files
 COPY . .
+
+# run server
+CMD ["poetry", "run", "python", "manage.py", "runserver"]

@@ -12,6 +12,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Check for changes
+        run: |
+          if git diff --quiet --exit-code ./cartesi_frontend/; then
+            echo "No changes in folder, skipping Docker build."
+            exit 0
+          else
+            echo "Changes detected in folder, building Docker image."
+          fi
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:

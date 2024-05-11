@@ -6,6 +6,7 @@ poetry.lock
 **/.env
 # Backup files
 *.bak
+test.sh
 
 # Distribution / packaging
 *.egg

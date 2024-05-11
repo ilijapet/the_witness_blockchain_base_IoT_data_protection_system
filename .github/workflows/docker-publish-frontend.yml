@@ -21,20 +21,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Check for changes, build and push to Docker hub
-        run: |
-          if git diff --quiet --exit-code HEAD^ HEAD ./cartesi_frontend; then
-            echo "No changes in folder, skipping Docker build."
-            exit 0
-          else
-            echo "Changes detected in folder, building Docker image."
-            # Add your Docker build command here
-            docker build -f ./cartesi_frontend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest ./cartesi_frontend
-            docker push ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest
-          fi
+      - name: Build Frontend Docker image
+        run: docker build -f ./cartesi_frontend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest .
 
-      # - name: Build Frontend Docker image
-      #   run: docker build -f ./cartesi_frontend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest .
-
-      # - name: Push Frontend Docker image
-      #   run: docker push ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest
+      - name: Push Frontend Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/cartesi_frontend:latest

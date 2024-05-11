@@ -4,6 +4,9 @@ FROM python:3.10.4-buster
 # set work directory
 WORKDIR /usr/src/app
 
+# Set environment variable to enable verbose logging
+ENV VERBOSE_LOGGING=true
+
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -18,6 +21,7 @@ RUN set -xe \
 
 
 RUN pwd; ls
+
 # Copy and install Python dependencies
 COPY ./backend/pyproject.toml .
 

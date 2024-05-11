@@ -27,6 +27,6 @@ jobs:
             exit 0
           else
             echo "Changes detected in folder, building Docker image."
-            docker build -f ./backend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/django_cartesi_backend:latest ./django_cartesi_backend
+            docker build -f ./backend/Dockerfile.dev -t ${{ secrets.DOCKER_USERNAME }}/django_cartesi_backend:latest ./backend
             docker push ${{ secrets.DOCKER_USERNAME }}/django_cartesi_backend:latest
           fi

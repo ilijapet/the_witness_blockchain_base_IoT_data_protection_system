@@ -16,6 +16,8 @@ RUN set -xe \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
+
+RUN pwd; ls
 # Copy and install Python dependencies
 COPY ./backend/pyproject.toml .
 

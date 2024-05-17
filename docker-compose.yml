@@ -14,8 +14,8 @@ services:
       context: ./cartesi_frontend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./cartesi_frontend:/app
+      - /app/node_modules
     ports:
       - 8080:8080
     command: yarn run dev

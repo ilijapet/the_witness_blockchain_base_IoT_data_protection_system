@@ -1,43 +1,40 @@
-import * as React from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-
-
-
+import * as React from "react";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ListSubheader from "@mui/material/ListSubheader";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PeopleIcon from "@mui/icons-material/People";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import LayersIcon from "@mui/icons-material/Layers";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton onClick={() => window.location.href='/profile'}>
+    <ListItemButton onClick={() => (window.location.href = "/profile")}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton onClick={() => window.location.href='/donations'}>
+    <ListItemButton onClick={() => (window.location.href = "/donations")}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Donations"/>
+      <ListItemText primary="Subscribe" />
     </ListItemButton>
-    <ListItemButton onClick={() => window.location.href='/organizations'}>
+    <ListItemButton onClick={() => (window.location.href = "/organizations")}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Organizations" />
+      <ListItemText primary="Companies" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
+      <ListItemText primary="Statistic" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
@@ -51,7 +48,7 @@ export const mainListItems = (
 export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
-      Reports 
+      Monitoring reports
     </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
@@ -65,7 +62,6 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
     </ListItemButton>
-    <ListItemButton>
-    </ListItemButton>
+    <ListItemButton></ListItemButton>
   </React.Fragment>
 );

@@ -59,8 +59,6 @@ function App() {
               path="/resetconfirmation"
               component={ResetConfirmation}
             />
-            <Route exact path="/organizations" component={Organisations} />
-            <Route exact path="/donations" component={Donations} />
           </Switch>
         </React.StrictMode>
       </Router>

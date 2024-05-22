@@ -1,103 +1,112 @@
-import * as React from 'react';
-import { useHistory } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import {TextField, Stack} from '@mui/material';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as React from "react";
+import { useHistory } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import { TextField, Stack } from "@mui/material";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { green } from '@mui/material/colors';
+import { green } from "@mui/material/colors";
 
-
-import axiosInstance from '../axios';
-
-
+import axiosInstance from "../axios";
 
 function Copyright(props) {
   return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://www.unicef.org/">  
-      www.unicef.org
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-      </Typography>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      <p style={{ marginBottom: "20px" }}>
+        The Witness: data protection system
+      </p>
+      <p style={{ marginBottom: "1px" }}>Powered by:</p>
+      <Link
+        style={{ marginRight: "4px" }}
+        color="inherit"
+        target="_blank"
+        href="https://cartesi.io/"
+      >
+        www.cartesi.io
+      </Link>
+      <span>{new Date().getFullYear()}</span>
+    </Typography>
   );
 }
 
-const defaultTheme = createTheme(
-  {
-      palette: {
-          mode: "dark",
-      primary: {
-          main: green[500],
-      },
-      secondary: {
-          main: green[500]
-}
-}}
-);
-
+const defaultTheme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: green[500],
+    },
+    secondary: {
+      main: green[500],
+    },
+  },
+});
 
 export default function SignUp() {
+  const form = useForm({
+    defualtValues: {
+      email: "",
+      password: "",
+      username: "",
+    },
+  });
 
-    const form = useForm({
-      defualtValues: {
-        email: '',
-        password: '',
-        username: '',
-      }
-    });
+  const { register, handleSubmit, formState, control } = form;
+  const { errors } = formState;
 
-    const {register, handleSubmit, formState, control } = form;
-    const {errors} = formState;
+  const history = useHistory();
 
-    const history = useHistory();
-
-    const handler = async (event) => {   
-      await axiosInstance.post('user/register/', {
-        email: event['email'],
-        password: event['password'],
-        user_name: event['username'],
-      }).then((res) => {
-        history.push('/');
+  const handler = async (event) => {
+    await axiosInstance
+      .post("user/register/", {
+        email: event["email"],
+        password: event["password"],
+        user_name: event["username"],
+      })
+      .then((res) => {
+        history.push("/");
         console.log(res);
         console.log(res.data);
-      }).catch((error) => {
-        console.error('There was an error!', error.response.data);
-        alert('There was an error!');
+      })
+      .catch((error) => {
+        console.error("There was an error!", error.response.data);
+        alert("There was an error!");
       });
-    };
+  };
 
-    return (
-      <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
-            
-            <Stack>
-              <form onSubmit={handleSubmit(handler)} noValidate> 
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+
+          <Stack>
+            <form onSubmit={handleSubmit(handler)} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -108,10 +117,12 @@ export default function SignUp() {
                     id="firstName"
                     label="Username"
                     autoFocus
-                    {...register("username", {required:"Username is required"})}
+                    {...register("username", {
+                      required: "Username is required",
+                    })}
                     error={!!errors.username}
                     helperText={errors.username?.message}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -121,10 +132,10 @@ export default function SignUp() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    {...register("email", {required:"Email is required"})}
+                    {...register("email", { required: "Email is required" })}
                     error={!!errors.email}
                     helperText={errors.email?.message}
-                    />
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -135,34 +146,35 @@ export default function SignUp() {
                     type="password"
                     id="password"
                     autoComplete="new-password"
-                    {...register("password", {required:"Password is required"})}
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
                     error={!!errors.password}
                     helperText={errors.password?.message}
-                    />
+                  />
                 </Grid>
-            
               </Grid>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                >
+              >
                 Sign Up
               </Button>
-              </form>
-              </Stack>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link href="/" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
-          <Copyright sx={{ mt: 5 }} />
-        </Container>
-        <DevTool control={control}/>
-      </ThemeProvider>
-    );
-    }
+            </form>
+          </Stack>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/" variant="body2">
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+      <DevTool control={control} />
+    </ThemeProvider>
+  );
+}

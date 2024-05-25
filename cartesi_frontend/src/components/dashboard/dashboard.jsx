@@ -1,7 +1,6 @@
-import * as React from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -14,8 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
-import { green } from "@mui/material/colors";
+
 import Button from "@mui/material/Button";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -24,35 +22,9 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./chart";
 import Personal from "./personal";
 import DeviceList from "./deviceList";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { ethers } from "ethers";
 
-import donationAbi from "./abi/Donation.json";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      <p style={{ marginBottom: "20px" }}>
-        The Witness: data protection system
-      </p>
-      <p style={{ marginBottom: "1px" }}>Powered by:</p>
-      <Link
-        style={{ marginRight: "4px" }}
-        color="inherit"
-        target="_blank"
-        href="https://cartesi.io/"
-      >
-        www.cartesi.io
-      </Link>
-      <span>{new Date().getFullYear()}</span>
-    </Typography>
-  );
-}
+import defaultTheme from "../../utils";
+import Copyright from "../Copyright";
 
 const drawerWidth = 240;
 
@@ -100,19 +72,7 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const defaultTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: green[500],
-    },
-    secondary: {
-      main: green[500],
-    },
-  },
-});
-
-export default function Dashboard({ paymentType }) {
+export default function Dashboard() {
   const [dashboard, setDashboard] = useState(true);
 
   const toggleDrawer = () => {

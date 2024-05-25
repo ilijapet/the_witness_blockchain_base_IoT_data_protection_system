@@ -1,55 +1,20 @@
-import React from "react";
 import { useHistory } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import { TextField, Stack } from "@mui/material";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { green } from "@mui/material/colors";
+import { ThemeProvider } from "@mui/material/styles";
 
 import axiosInstance from "../axios";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      <p style={{ marginBottom: "1px" }}>Powered by:</p>
-      <Link
-        style={{ marginRight: "4px" }}
-        color="inherit"
-        target="_blank"
-        href="https://cartesi.io/"
-      >
-        www.cartesi.io
-      </Link>
-      <span>{new Date().getFullYear()}</span>
-    </Typography>
-  );
-}
-
-const defaultTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: green[500],
-    },
-    secondary: {
-      main: green[500],
-    },
-  },
-});
+import defaultTheme from "../utils";
+import Copyright from "./Copyright";
 
 export default function ForgetPassword() {
   const form = useForm({

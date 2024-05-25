@@ -86,10 +86,10 @@ class PasswordRestRequestView(GenericAPIView):
                         kwargs={"encoded_pk": encoded_pk, "token": token},
                     )
                     relativeLink = f"/resetpassword/{encoded_pk}/{token}"
-                    if "127.0.0.1" in current_site:
-                        absurl = f"http://localhost:3000{relativeLink}"
+                    if "localhost:8000" in current_site:
+                        absurl = f"http://localhost:8080{relativeLink}"
                     else:
-                        absurl = f"https://nftmusicportal.net{relativeLink}"
+                        absurl = f"https://digitalraritieslab.net{relativeLink}"
                     data = {
                         "email_subject": "Password Reset Request",
                         "email_body": f"Hi {user.user_name},\nPlease use the link below to reset your password\n{absurl}",
@@ -106,7 +106,7 @@ class PasswordRestRequestView(GenericAPIView):
                         {"message": "User does not exist"},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
-        except Exception:
+        except Exception as e:
             return JsonResponse(
                 {"message": "something is wrong with your email"},
                 status=status.HTTP_400_BAD_REQUEST,

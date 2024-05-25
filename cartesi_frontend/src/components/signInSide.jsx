@@ -11,9 +11,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { green } from "@mui/material/colors";
+import { ThemeProvider } from "@mui/material/styles";
 
+import cartesiFront from "../assets/2023_Backgrounds_2.webp";
 // React router dom for routing
 import { useHistory } from "react-router-dom";
 
@@ -25,43 +25,8 @@ import { DevTool } from "@hookform/devtools";
 
 // Axios for API calls
 import axiosInstance from "../axios";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      <p style={{ marginBottom: "20px" }}>
-        The Witness: data protection system
-      </p>
-      <p style={{ marginBottom: "1px" }}>Powered by:</p>
-      <Link
-        style={{ marginRight: "4px" }}
-        color="inherit"
-        target="_blank"
-        href="https://cartesi.io/"
-      >
-        www.cartesi.io
-      </Link>
-      <span>{new Date().getFullYear()}</span>
-    </Typography>
-  );
-}
-
-const defaultTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: green[500],
-    },
-    secondary: {
-      main: green[500],
-    },
-  },
-});
+import defaultTheme from "../utils";
+import Copyright from "./Copyright";
 
 export default function SignInSide() {
   const form = useForm({
@@ -88,8 +53,6 @@ export default function SignInSide() {
         axiosInstance.defaults.headers["Authorization"] =
           "JWT " + localStorage.getItem("access_token");
         history.push("profile/");
-        console.log(res);
-        console.log(res.data);
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -107,14 +70,13 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/blue-and-white-abstract-art-VT4rx775FT4)",
+            backgroundImage: `url(${cartesiFront})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
-            backgroundSize: "cover",
+            backgroundSize: "100% 100%",
             backgroundPosition: "center",
           }}
         />

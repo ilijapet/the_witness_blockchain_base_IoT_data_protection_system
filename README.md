@@ -98,3 +98,6 @@ Data integrity as service: where we provide a network of validators and full sof
 Second solution could be that a company or industrial branch organises their own network of validators supported by an interested user organisations or even customer protection organisations (who can potentially be interested in) and create a network of node validators to monitor data integrity on their own vehicles and other IoT devices.
 
 =======
+
+TODO: make step by step guide on App usage
+TODO: add need for EMAIL_HOST_PASSWORD to load from .env + generating app password if using google

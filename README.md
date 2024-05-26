@@ -100,4 +100,4 @@ Second solution could be that a company or industrial branch organises their own
 =======
 
 TODO: make step by step guide on App usage
-TODO: add need for EMAIL_HOST_PASSWORD to load from .env + generating app password if using google
+TODO: add need for EMAIL_HOST_PASSWORD to load from .env + generating app password if using google + change email in django settings

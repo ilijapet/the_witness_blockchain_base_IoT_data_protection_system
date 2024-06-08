@@ -180,6 +180,16 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
+# IoT mock data generator related keys
+PRIVATE_KEY_1 = os.getenv("PRIVATE_KEY_1")
+PUBLIC_KEY_1 = os.getenv("PUBLIC_KEY_1")
+PRIVATE_KEY_2 = os.getenv("PRIVATE_KEY_2")
+PUBLIC_KEY_2 = os.getenv("PUBLIC_KEY_2")
+PRIVATE_KEY_3 = os.getenv("PRIVATE_KEY_3")
+PUBLIC_KEY_3 = os.getenv("PUBLIC_KEY_3")
+PRIVATE_KEY_CARTESI = os.getenv("PRIVATE_KEY_CARTESI")
+PUBLIC_KEY_CARTESI = os.getenv("PUBLIC_KEY_CARTESI")
+
 
 LOGGING = {
     'version': 1,

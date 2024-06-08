@@ -58,5 +58,5 @@ class IotDataGenerator:
         } 
         for key, value in body.items():
             body[key] = base64.b64encode(value).decode()
-        response = requests.post("http://localhost:8005/api/v1/bridge", json=body)
+        response = requests.post("http://localhost:8000/api/v1/bridge", json=body)
         return body

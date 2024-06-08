@@ -4,7 +4,6 @@ from datetime import timedelta
 import os
 from django.conf import settings
 
-
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,11 +33,14 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "users.apps.UsersConfig",
+    "iot_data_generator.apps.IotDataGeneratorConfig",
     "dashboard.apps.DashboardConfig",
+    "bridge.apps.BridgeConfig",
     "rest_framework_simplejwt.token_blacklist",
 ]
 
 MIDDLEWARE = [
+    # "kolo.middleware.KoloMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",

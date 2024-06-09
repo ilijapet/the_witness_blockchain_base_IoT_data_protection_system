@@ -20,7 +20,7 @@
 
   # Expose the port that the Vite server will run on
 
-  EXPOSE 8080
+  EXPOSE 8081
 
   # Start the Vite development server
 

@@ -19,5 +19,5 @@ services:
       - ./cartesi_frontend:/app
       - /app/node_modules
     ports:
-      - 8080:8080
+      - 8081:8081
     command: yarn run dev

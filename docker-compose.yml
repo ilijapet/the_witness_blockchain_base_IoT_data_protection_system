@@ -1,5 +1,14 @@
 version: "3"
 services:
+  # cartesi_backend:
+  #   build:
+  #     context: ./cartesi_backend
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./cartesi_backend:/opt/cartesi/dapp
+  #   ports:
+  #     - 5004:5004
+  #   command: ["python3", "dapp.py"]
   backend:
     env_file:
       - .env
@@ -9,8 +18,8 @@ services:
     volumes:
       - ./backend:/usr/src/app
     ports:
-      - 8000:8000
-    command: poetry run python -m manage runserver 0.0.0.0:8000
+      - 8005:8005
+    command: poetry run python -m manage runserver 0.0.0.0:8005
   frontend:
     build:
       context: ./cartesi_frontend

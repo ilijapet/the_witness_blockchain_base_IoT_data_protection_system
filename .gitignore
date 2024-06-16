@@ -88,3 +88,4 @@ test.log
 var/
 
 cartesi_backend/deployments
+node_modules/

@@ -1,7 +1,4 @@
-from rest_framework.response import Response
 from rest_framework.views import APIView
-from utils.protocol import WitnessProtocol
-import base64
 from rest_framework.response import Response as HTTPResponse
 from utils.sc_interface import SCInterface
 

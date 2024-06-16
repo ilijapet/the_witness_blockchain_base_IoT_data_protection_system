@@ -19,6 +19,7 @@
     "codegen": "^0.1.0",
     "ethers": "5.7",
     "graphql": "^16.7.1",
+    "js-yaml": "^4.1.0",
     "react": "18.2.0",
     "react-native": "0.74.2",
     "underscore": "^1.13.6",

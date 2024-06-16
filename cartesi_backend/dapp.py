@@ -1,8 +1,10 @@
 from os import environ
+import base64
 import traceback
 import logging
 import requests
 import json
+from utils.protocol import WitnessProtocol
 
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
@@ -29,9 +31,12 @@ def handle_advance(data):
 
     status = "accept"
     try:
-        input = hex2str(data["payload"])
+        input_data = hex2str(data["payload"])
         logger.info(f"Received input: {input}")
-        
+        for key, value in input_data.items():
+            data[key] = base64.b64decode(value)
+        message = WitnessProtocol.decrypt_verifay(data["data"], data["signature"], data["public_key"])
+        print(message)
         # Evaluates expression
         logger.info(f"HTTP rollup_server url is {rollup_server}")
 

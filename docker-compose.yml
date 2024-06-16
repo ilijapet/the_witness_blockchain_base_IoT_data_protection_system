@@ -1,14 +1,5 @@
 version: "3"
 services:
-  # cartesi_backend:
-  #   build:
-  #     context: ./cartesi_backend
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./cartesi_backend:/opt/cartesi/dapp
-  #   ports:
-  #     - 5004:5004
-  #   command: ["python3", "dapp.py"]
   backend:
     env_file:
       - .env

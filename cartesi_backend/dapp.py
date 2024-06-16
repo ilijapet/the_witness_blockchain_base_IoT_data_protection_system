@@ -1,4 +1,5 @@
 from os import environ
+import datetime
 import base64
 import traceback
 import logging
@@ -72,6 +73,7 @@ while True:
     logger.info("Sending finish")
     response = requests.post(rollup_server + "/finish", json=finish)
     logger.info(f"Received finish status {response.status_code}")
+    logger.info("Time:" + str(datetime.datetime.now()))
     if response.status_code == 202:
         logger.info("No pending rollup request, trying again")
     else:

@@ -9,8 +9,6 @@ from typing import Dict
 
 load_dotenv()
 
-# DEFAULT_URL = "http://localhost:8545"
-# DEFAULT_URL = "http://127.0.0.1:5004"
 
 
 class BaseContract:
@@ -31,19 +29,19 @@ class ContractInstatiator(BaseContract):
     
     def __init__(self):
         super().__init__()
-        try:
-            self.contract: "Contract" = self.contract_instance(self.abi_path)
-        except Exception as e:
-            logging.error(f"Error initializing ContractInstatiator: {e}")
-            raise e
+        self.contract: "Contract" = self.contract_instance(self.abi_path)
 
     # Return contract instance
     def contract_instance(self, abi_path: str) -> "Contract":
-        abi = ContractUtilities.load_abi(abi_path)
-        contract = self.w3.eth.contract(
-            address=self.inputbox_address, abi=abi
-        ) # type: ignore
-        return contract
+        try:
+            abi = ContractUtilities.load_abi(abi_path)
+            contract = self.w3.eth.contract(
+                address=self.inputbox_address, abi=abi
+            ) # type: ignore
+            return contract
+        except Exception as e:
+            logging.error(f"Error initializing contract_instance: {e}")
+            raise e
 
 
 class ContractUtilities():        
@@ -91,7 +89,7 @@ class SCInterface(ContractUtilities, ContractInstatiator):
 
 
 if __name__ == "__main__":
-    value = {"proba": "Budi blag Ilija"}
+    value = {"proba": "jeda dva"}
     contract = SCInterface()
     result = contract.sendInput(value)
     print(result)

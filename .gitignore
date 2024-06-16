@@ -87,6 +87,4 @@ test.log
 
 var/
 
-A_to_B_encrypted_authenticated.py
-mac.py
-public_privat.py
+cartesi_backend/deployments

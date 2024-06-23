@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -25,7 +25,7 @@ import DeviceList from "./deviceList";
 
 import defaultTheme from "../../utils";
 import Copyright from "../Copyright";
-
+// import axiosInstance from "../../axios";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -74,10 +74,26 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(true);
+  // const [data, setData] = useState({});
 
   const toggleDrawer = () => {
     setDashboard(!dashboard);
   };
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axiosInstance.get();
+  //       setData(response.data);
+  //       console.log(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching dashboard data:", error);
+  //       // Handle error (e.g., redirect to login if unauthorized)
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>

@@ -45,7 +45,7 @@ def handle_advance(data):
     status = "accept"
     try:
         input_data = hex2str(data["payload"])
-        # logger.info(f"Received input: {input}")
+        logger.info(f"Received input: {input}")
         for key, value in input_data.items():
             data[key] = base64.b64decode(value)
         message = WitnessProtocol.decrypt_verifay(data["data"], data["signature"], data["public_key"])
@@ -53,7 +53,6 @@ def handle_advance(data):
         digest = hash_public_key(publick_key)
         str_data = message.decode('utf-8')
         data_dict = json.loads(str_data)
-        print(data_dict, "ilija")
         database.update_data(digest, data_dict)
 
         # Evaluates expression
@@ -78,6 +77,9 @@ def handle_inspect(data):
     logger.info("Adding report")
     response = requests.post(rollup_server + "/report", json={"payload": data["payload"]})
     logger.info(f"Received report status {response.status_code}")
+    # TODO: how to get user uuid
+    result = database.get_data(uuid)
+    # TODO: return data to frontend
     return "accept"
 
 handlers = {
@@ -95,6 +97,7 @@ while True:
     if response.status_code == 202:
         logger.info("No pending rollup request, trying again")
     else:
+        print("unutra si")
         rollup_request = response.json()
         data = rollup_request["data"]
 

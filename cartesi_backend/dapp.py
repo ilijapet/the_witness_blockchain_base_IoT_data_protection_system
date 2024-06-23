@@ -1,4 +1,5 @@
 from os import environ
+import hashlib
 import datetime
 import base64
 import traceback
@@ -6,6 +7,10 @@ import logging
 import requests
 import json
 from utils.protocol import WitnessProtocol
+from data_processing import Database, engine
+
+
+database = Database(engine)
 
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
@@ -27,17 +32,30 @@ def str2hex(str):
     """
     return "0x" + str.encode("utf-8").hex()
 
+
+def hash_public_key(public_key):
+    hash_obj = hashlib.sha256()
+    hash_obj.update(public_key)
+    hash_hex = hash_obj.hexdigest()
+    return hash_hex
+
 def handle_advance(data):
     logger.info(f"Received advance request data {data}")
 
     status = "accept"
     try:
         input_data = hex2str(data["payload"])
-        logger.info(f"Received input: {input}")
+        # logger.info(f"Received input: {input}")
         for key, value in input_data.items():
             data[key] = base64.b64decode(value)
         message = WitnessProtocol.decrypt_verifay(data["data"], data["signature"], data["public_key"])
-        print(message)
+        publick_key = data["public_key"].decode('utf-8').replace('\n', '\\n').encode('utf-8')
+        digest = hash_public_key(publick_key)
+        str_data = message.decode('utf-8')
+        data_dict = json.loads(str_data)
+        print(data_dict, "ilija")
+        database.update_data(digest, data_dict)
+
         # Evaluates expression
         logger.info(f"HTTP rollup_server url is {rollup_server}")
 

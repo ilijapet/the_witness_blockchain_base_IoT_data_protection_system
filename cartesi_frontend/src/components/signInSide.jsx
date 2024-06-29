@@ -24,11 +24,14 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 // Axios for API calls
-import axiosInstance from "../axios";
+import { axiosInstance } from "../axios";
 import defaultTheme from "../utils";
 import Copyright from "./Copyright";
 
+import { useAuth } from "../AutoContext";
+
 export default function SignInSide() {
+  const { setIsAuthenticated } = useAuth();
   const form = useForm({
     defualtValues: {
       email: "",
@@ -52,6 +55,7 @@ export default function SignInSide() {
         localStorage.setItem("refresh_token", res.data["refresh"]);
         axiosInstance.defaults.headers["Authorization"] =
           "JWT " + localStorage.getItem("access_token");
+        setIsAuthenticated(true);
         history.push("profile/");
       })
       .catch((error) => {

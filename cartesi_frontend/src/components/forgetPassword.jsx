@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { ThemeProvider } from "@mui/material/styles";
 
-import axiosInstance from "../axios";
+import { axiosInstance } from "../axios";
 import defaultTheme from "../utils";
 import Copyright from "./Copyright";
 

@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 // import { green } from "@mui/material/colors";
 
-import axiosInstance from "../axios";
+import { axiosInstance } from "../axios";
 import defaultTheme from "../utils";
 import Copyright from "./Copyright";
 

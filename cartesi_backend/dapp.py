@@ -39,6 +39,21 @@ def hash_public_key(public_key):
     hash_hex = hash_obj.hexdigest()
     return hash_hex
 
+
+def add_report(output=""):
+    logger.info("Adding report " + output)
+    report = {"payload": str2hex(output)}
+    response = requests.post(rollup_server + "/report", json=report)
+    logger.info(f"Received report status {response.status_code}")
+
+
+def get_user_data():
+    output = json.dumps({"user_daya": "this are user data "})
+    add_report(output)
+    return "accept"
+
+
+
 def handle_advance(data):
     logger.info(f"Received advance request data {data}")
 
@@ -73,21 +88,29 @@ def handle_advance(data):
     return status
 
 def handle_inspect(data):
-    logger.info(f"Received inspect request data {data}")
-    logger.info("Adding report")
-    response = requests.post(rollup_server + "/report", json={"payload": data["payload"]})
-    logger.info(f"Received report status {response.status_code}")
-    # TODO: how to get user uuid
-    result = database.get_data(uuid)
-    # TODO: return data to frontend
-    return "accept"
+    try:
+        payload = json.loads(hex2str(data["payload"]))
+    except:
+        return "reject"
+    method = payload.get("method")
+    logger.info(f"Received inspect request data {method}")
+    handler = inspect_method_handlers.get(method)
+    if not handler:
+        return "reject"
+    
+    return handler()
+
+inspect_method_handlers = {
+    "get_user_data": get_user_data
+}
+
+finish = {"status": "accept"}
 
 handlers = {
     "advance_state": handle_advance,
     "inspect_state": handle_inspect,
 }
 
-finish = {"status": "accept"}
 
 while True:
     logger.info("Sending finish")

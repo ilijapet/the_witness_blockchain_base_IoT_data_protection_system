@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseURL = `${import.meta.env.VITE_REACT_APP_BACKEND_HOST}`;
+const cartesiURL = `${import.meta.env.VITE_CARTESI_BACKEND_HOST}`;
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
@@ -12,6 +13,13 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
     accept: "application/json",
   },
+});
+
+// Axios instance for new HTTP server
+const axiosCartesiHttpServer = axios.create({
+  baseURL: cartesiURL,
+  timeout: 5000,
+  // Add any specific headers or configurations needed for the HTTP server
 });
 
 axiosInstance.interceptors.response.use(
@@ -84,4 +92,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export { axiosInstance, axiosCartesiHttpServer };

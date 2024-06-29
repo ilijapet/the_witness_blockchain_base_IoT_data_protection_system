@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Title from "./title";
-import axiosInstance from "../../axios";
+import { axiosInstance } from "../../axios";
 
 function createData(id, name, shipTo, paymentMethod, status) {
   return { id, name, shipTo, paymentMethod, status };

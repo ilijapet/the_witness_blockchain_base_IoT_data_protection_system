@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import axiosInstance from "../axios";
+import { axiosInstance } from "../axios";
 import { useHistory } from "react-router-dom";
 // import defaultTheme from "../utils";
 

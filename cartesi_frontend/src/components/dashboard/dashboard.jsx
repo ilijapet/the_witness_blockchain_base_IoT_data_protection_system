@@ -25,7 +25,7 @@ import DeviceList from "./deviceList";
 
 import defaultTheme from "../../utils";
 import Copyright from "../Copyright";
-// import axiosInstance from "../../axios";
+import { axiosCartesiHttpServer } from "../../axios";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -72,28 +72,41 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
+// / Configuration for the request
+let config = {
+  method: "get", // This is the HTTP method for the request
+  maxBodyLength: Infinity,
+  url: "/:payload", // Adjusted to only include the endpoint, as baseURL is already set
+  headers: {
+    Accept: "application/json",
+  },
+};
+
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(true);
-  // const [data, setData] = useState({});
+  const [data, setData] = useState({});
 
   const toggleDrawer = () => {
     setDashboard(!dashboard);
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axiosInstance.get();
-  //       setData(response.data);
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching dashboard data:", error);
-  //       // Handle error (e.g., redirect to login if unauthorized)
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosCartesiHttpServer.get(config.url, {
+          headers: config.headers,
+          maxBodyLength: config.maxBodyLength,
+        });
+        setData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        // Handle error (e.g., redirect to login if unauthorized)
+      }
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>

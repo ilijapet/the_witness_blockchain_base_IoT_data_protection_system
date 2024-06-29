@@ -14,7 +14,7 @@ import { DevTool } from "@hookform/devtools";
 
 import { useLocation } from "react-router-dom";
 
-import axiosInstance from "../axios";
+import { axiosInstance } from "../axios";
 import defaultTheme from "../utils";
 import Copyright from "./Copyright";
 

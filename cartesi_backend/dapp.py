@@ -9,6 +9,8 @@ import json
 from utils.protocol import WitnessProtocol
 from data_processing import Database, engine
 
+from data_processing import Database
+
 
 database = Database(engine)
 
@@ -47,13 +49,19 @@ def add_report(output=""):
     logger.info(f"Received report status {response.status_code}")
 
 
-def get_user_data():
-    output = json.dumps({"user_daya": "this are user data "})
-    add_report(output)
+def get_user_data(data):
+    _, public_key = Database.get_env_var(1)
+    digest = hash_public_key(public_key)
+    user_data = database.get_data(digest)
+    if not user_data:
+        return "reject"
+    add_report(user_data)
     return "accept"
 
 
 
+
+# TODO: take out update_data from handle_advance and put it in a separate function
 def handle_advance(data):
     logger.info(f"Received advance request data {data}")
 
@@ -98,7 +106,7 @@ def handle_inspect(data):
     if not handler:
         return "reject"
     
-    return handler()
+    return handler(method)
 
 inspect_method_handlers = {
     "get_user_data": get_user_data
@@ -120,7 +128,6 @@ while True:
     if response.status_code == 202:
         logger.info("No pending rollup request, trying again")
     else:
-        print("unutra si")
         rollup_request = response.json()
         data = rollup_request["data"]
 

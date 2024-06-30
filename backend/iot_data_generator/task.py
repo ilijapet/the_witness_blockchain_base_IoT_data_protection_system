@@ -43,7 +43,7 @@ class IotDataGenerator():
 
         
     def generate_random_iot_data(self):
-        env_index = random.randint(1, 3)
+        env_index = random.randint(1, 1)
         self.private_key_iot, self.public_key_iot = GetVar.get_env_var(env_index)
         digest = IotDataGenerator.hash_public_key(self.public_key_iot)
         km = self.get_data(digest)

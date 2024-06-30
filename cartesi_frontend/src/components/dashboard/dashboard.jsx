@@ -22,6 +22,7 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./chart";
 import Personal from "./personal";
 import DeviceList from "./deviceList";
+import CarStatistic from "./car_statistic";
 
 import defaultTheme from "../../utils";
 import Copyright from "../Copyright";
@@ -74,19 +75,9 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-// / Configuration for the request
-// let config = {
-//   method: "get", // This is the HTTP method for the request
-//   maxBodyLength: Infinity,
-//   url: "/:payload", // Adjusted to only include the endpoint, as baseURL is already set
-//   headers: {
-//     Accept: "application/json",
-//   },
-// };
-
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(true);
-  const [data, setData] = useState({});
+  const [carStatistics, setCarStatistics] = useState(null);
 
   const hex2str = (hex) => {
     if (hex.startsWith("0x")) {
@@ -111,7 +102,6 @@ export default function Dashboard() {
       if (response.status === 200) {
         const result = await response.json();
         console.log(result.reports);
-        console.log("ok je");
         return result.reports;
       } else {
         console.log(await response.text());
@@ -119,14 +109,12 @@ export default function Dashboard() {
     };
 
     const fetchData = async () => {
-      console.log("jedan");
       try {
         let results = await inspect({ method: "get_user_data" });
-        console.log("dva");
         const result = hex2str(results[0]["payload"]);
         results = JSON.parse(result);
         console.log(results);
-        console.log("dva");
+        setCarStatistics(results);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -235,6 +223,14 @@ export default function Dashboard() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <div>
+                    {carStatistics ? (
+                      <CarStatistic data={carStatistics} />
+                    ) : (
+                      "Loading..."
+                    )}
+                  </div>
+                  <div style={{ margin: "40px 0" }} />
                   <DeviceList />
                 </Paper>
               </Grid>

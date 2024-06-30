@@ -109,7 +109,13 @@ class Database(DatabaseSessionManager, Helpers):
             car = session.query(Car).filter_by(uuid=public_key).first()
             if car:
                 for key, value in data.items():
-                    setattr(car, key, value)
+                    if key == 'distance':
+                        # Assuming 'distance' is an integer or float. Adjust parsing as necessary.
+                        current_distance = getattr(car, 'distance', 0)  # Get current distance, default to 0 if not set
+                        new_distance = current_distance + value  # Add the new distance to the current distance
+                        setattr(car, 'distance', new_distance)  # Update the car object with the new total distance
+                    else:
+                        setattr(car, key, value)  # For all other keys, overwrite the value as before
             else:
                 print(f"No car found with public_key: {public_key}")
 
@@ -121,3 +127,15 @@ class Database(DatabaseSessionManager, Helpers):
             else:
                 print(f"No car found with public_key: {public_key}")
 
+
+
+if __name__ == "__main__":
+    database = Database(engine)
+    data = {
+        "brake_status": False,
+        "tires_status": True,
+        "engine_status": False,
+        "distance": 200
+    }
+    database.update_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9", data)
+    print(database.get_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9"))

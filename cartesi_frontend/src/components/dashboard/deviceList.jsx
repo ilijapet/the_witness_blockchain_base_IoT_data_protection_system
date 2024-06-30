@@ -84,7 +84,7 @@ export default function DeviceList() {
 
   return (
     <React.Fragment>
-      <Title> Companies and IoT devices </Title>
+      <Title> Supported IoT devices </Title>
       <Table size="small">
         <TableHead>
           <TableRow>

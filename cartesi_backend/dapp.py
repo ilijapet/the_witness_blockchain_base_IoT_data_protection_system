@@ -97,7 +97,7 @@ def handle_advance(data):
 
 def handle_inspect(data):
     try:
-        payload = json.loads(hex2str(data["payload"]))
+        payload = hex2str(data["payload"])
     except:
         return "reject"
     method = payload.get("method")

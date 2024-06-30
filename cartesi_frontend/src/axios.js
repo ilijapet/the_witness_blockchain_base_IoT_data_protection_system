@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
 // Axios instance for new HTTP server
 const axiosCartesiHttpServer = axios.create({
   baseURL: cartesiURL,
-  timeout: 5000,
+  timeout: 50000,
   // Add any specific headers or configurations needed for the HTTP server
 });
 

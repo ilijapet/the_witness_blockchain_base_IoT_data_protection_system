@@ -28,6 +28,8 @@ import Copyright from "../Copyright";
 import { axiosCartesiHttpServer } from "../../axios";
 const drawerWidth = 240;
 
+const cartesiURL = `${import.meta.env.VITE_CARTESI_BACKEND_HOST}`;
+
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, dashboard }) => ({
@@ -73,35 +75,60 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 // / Configuration for the request
-let config = {
-  method: "get", // This is the HTTP method for the request
-  maxBodyLength: Infinity,
-  url: "/:payload", // Adjusted to only include the endpoint, as baseURL is already set
-  headers: {
-    Accept: "application/json",
-  },
-};
+// let config = {
+//   method: "get", // This is the HTTP method for the request
+//   maxBodyLength: Infinity,
+//   url: "/:payload", // Adjusted to only include the endpoint, as baseURL is already set
+//   headers: {
+//     Accept: "application/json",
+//   },
+// };
 
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(true);
   const [data, setData] = useState({});
+
+  const hex2str = (hex) => {
+    if (hex.startsWith("0x")) {
+      hex = hex.slice(2);
+    }
+    const bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+    }
+    return new TextDecoder().decode(bytes);
+  };
 
   const toggleDrawer = () => {
     setDashboard(!dashboard);
   };
 
   useEffect(() => {
+    const inspect = async (payload) => {
+      const response = await fetch(
+        `${cartesiURL}/inspect/${JSON.stringify(payload)}`
+      );
+      if (response.status === 200) {
+        const result = await response.json();
+        console.log(result.reports);
+        console.log("ok je");
+        return result.reports;
+      } else {
+        console.log(await response.text());
+      }
+    };
+
     const fetchData = async () => {
+      console.log("jedan");
       try {
-        const response = await axiosCartesiHttpServer.get(config.url, {
-          headers: config.headers,
-          maxBodyLength: config.maxBodyLength,
-        });
-        setData(response.data);
-        console.log(response.data);
+        let results = await inspect({ method: "get_user_data" });
+        console.log("dva");
+        const result = hex2str(results[0]["payload"]);
+        results = JSON.parse(result);
+        console.log(results);
+        console.log("dva");
       } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-        // Handle error (e.g., redirect to login if unauthorized)
+        console.error("Error fetching data:", error);
       }
     };
 

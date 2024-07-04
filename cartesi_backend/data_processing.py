@@ -73,11 +73,12 @@ class DatabaseSessionManager:
         session = self.Session()
         try:
             yield session
-            session.commit()
         except SQLAlchemyError as e:
             session.rollback()
             print(f"An error occurred: {e}")
             raise
+        else:
+            session.commit()
         finally:
             session.close()
 
@@ -95,7 +96,7 @@ class Database(DatabaseSessionManager, Helpers):
         with self.session_scope() as session:
             new_car = Car(uuid=data['uuid'], brake_status=data.get('brake_status', False),
                         tires_status=data.get('tires_status', False), engine_status=data.get('engine_status', False),
-                        distance=data.get('distance', 0))
+                        distance=data.get('distance', 0), create_at=func.now())
             session.add(new_car)
 
     def get_data(self, public_key):
@@ -132,10 +133,14 @@ class Database(DatabaseSessionManager, Helpers):
 if __name__ == "__main__":
     database = Database(engine)
     data = {
+        "uuid": "39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9",  # Assuming this is the public key
         "brake_status": False,
-        "tires_status": True,
+        "tires_status": False,
         "engine_status": False,
-        "distance": 200
+        "distance": 5,
+        "create_at": func.now(),
     }
-    database.update_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9", data)
-    print(database.get_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9"))
+    # database.update_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9", data)
+    # database.create_table()
+    database.insert_data(data)
+    # print(database.get_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9"))

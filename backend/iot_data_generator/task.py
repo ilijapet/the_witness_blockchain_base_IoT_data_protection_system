@@ -52,7 +52,7 @@ class IotDataGenerator():
             "distance": random.randint(20, 150) + km,
             "break_status": random.choices([0, 1], weights=[49, 1], k=1)[0],
             "tires_status": random.choices([0, 1], weights=[49, 1], k=1)[0],
-            "engine_status":  random.choices([0, 1], weights=[49, 1], k=1)[0],
+            "engine_status":  random.choices([0, 1], weights=[5, 1], k=1)[0],
             "created_at": datetime.datetime.now().isoformat(),
         }
         print(data)

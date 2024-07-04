@@ -1,17 +1,17 @@
-import React from "react";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import React from 'react';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import SignInSide from "./components/signInSide";
-import SignUp from "./components/signUp";
-import Logout from "./components/logout";
-import ForgetPassword from "./components/forgetPassword";
-import ResetConfirmationMail from "./components/resetConfirmationMail";
-import ResetConfirmation from "./components/resetConfirmation";
-import ResetPassword from "./components/resetPassword";
-import Dashboard from "./components/dashboard/dashboard";
-import PrivateRoute from "./PrivateRoute";
+import SignInSide from './components/signInSide';
+import SignUp from './components/signUp';
+import Logout from './components/logout';
+import ForgetPassword from './components/forgetPassword';
+import ResetConfirmationMail from './components/resetConfirmationMail';
+import ResetConfirmation from './components/resetConfirmation';
+import ResetPassword from './components/resetPassword';
+import Dashboard from './components/dashboard/dashboard';
+import PrivateRoute from './PrivateRoute';
 
-import { AuthProvider } from "./AutoContext";
+import { AuthProvider } from './AutoContext';
 const isAuthenticated = false;
 
 function App() {

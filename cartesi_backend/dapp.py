@@ -1,16 +1,15 @@
-from os import environ
-import hashlib
-import datetime
 import base64
-import traceback
-import logging
-import requests
+import datetime
+import hashlib
 import json
+import logging
+import traceback
+from os import environ
+
+import requests
+
+from utils.data_processing import Database, engine
 from utils.protocol import WitnessProtocol
-from data_processing import Database, engine
-
-from data_processing import Database
-
 
 database = Database(engine)
 
@@ -21,12 +20,14 @@ rollup_server = environ["ROLLUP_HTTP_SERVER_URL"]
 
 logger.info(f"HTTP rollup_server url is {rollup_server}")
 
+
 def hex2str(hex):
     """
     Decodes a hex string into a regular string
     """
     result = bytes.fromhex(hex[2:]).decode("utf-8")
     return json.loads(result)
+
 
 def str2hex(str):
     """
@@ -59,8 +60,6 @@ def get_user_data(data):
     return "accept"
 
 
-
-
 # TODO: take out update_data from handle_advance and put it in a separate function
 def handle_advance(data):
     logger.info(f"Received advance request data {data}")
@@ -71,10 +70,12 @@ def handle_advance(data):
         logger.info(f"Received input: {input}")
         for key, value in input_data.items():
             data[key] = base64.b64decode(value)
-        message = WitnessProtocol.decrypt_verifay(data["data"], data["signature"], data["public_key"])
-        publick_key = data["public_key"].decode('utf-8').replace('\n', '\\n').encode('utf-8')
+        message = WitnessProtocol.decrypt_verifay(
+            data["data"], data["signature"], data["public_key"]
+        )
+        publick_key = data["public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
         digest = hash_public_key(publick_key)
-        str_data = message.decode('utf-8')
+        str_data = message.decode("utf-8")
         data_dict = json.loads(str_data)
         database.update_data(digest, data_dict)
 
@@ -88,29 +89,30 @@ def handle_advance(data):
 
     except Exception as e:
         status = "reject"
-        msg = f"Error processing data {data}\n{traceback.format_exc()}"
+        msg = f"Error {e} processing data  {data}\n{traceback.format_exc()}"
         logger.error(msg)
         response = requests.post(rollup_server + "/report", json={"payload": str2hex(msg)})
         logger.info(f"Received report status {response.status_code} body {response.content}")
 
     return status
 
+
 def handle_inspect(data):
     try:
         payload = hex2str(data["payload"])
-    except:
+    except Exception as e:
+        logger.error(f"Error {e} decoding payload {data['payload']}")
         return "reject"
     method = payload.get("method")
     logger.info(f"Received inspect request data {method}")
     handler = inspect_method_handlers.get(method)
     if not handler:
         return "reject"
-    
+
     return handler(method)
 
-inspect_method_handlers = {
-    "get_user_data": get_user_data
-}
+
+inspect_method_handlers = {"get_user_data": get_user_data}
 
 finish = {"status": "accept"}
 

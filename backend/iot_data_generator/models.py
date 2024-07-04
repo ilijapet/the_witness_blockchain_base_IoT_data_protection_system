@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class Car(models.Model):
     uuid = models.CharField(primary_key=True, max_length=100)
     brake_status = models.BooleanField(default=False)

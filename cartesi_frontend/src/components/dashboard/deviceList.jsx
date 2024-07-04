@@ -1,14 +1,14 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import Link from "@mui/material/Link";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
-import Title from "./title";
-import { axiosInstance } from "../../axios";
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import Link from '@mui/material/Link';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
+import Title from './title';
+import { axiosInstance } from '../../axios';
 
 function createData(id, name, shipTo, paymentMethod, status) {
   return { id, name, shipTo, paymentMethod, status };
@@ -19,44 +19,44 @@ function preventDefault(event) {
 
 export default function DeviceList() {
   const [contract, setContract] = useState(null);
-  const [donationSuccessUNICEF, setDonationSuccessUNICEF] = useState("Status");
-  const [donationSuccessUNDP, setDonationSuccessUNDP] = useState("Status");
+  const [donationSuccessUNICEF, setDonationSuccessUNICEF] = useState('Status');
+  const [donationSuccessUNDP, setDonationSuccessUNDP] = useState('Status');
   const [donationSuccessTrentino, setDonationSuccessTrentino] =
-    useState("Status");
-  const [donationSuccessUNESCO, setDonationSuccessUNESCO] = useState("Status");
-  const [donationSuccessSOS, setDonationSuccessSOS] = useState("Status");
+    useState('Status');
+  const [donationSuccessUNESCO, setDonationSuccessUNESCO] = useState('Status');
+  const [donationSuccessSOS, setDonationSuccessSOS] = useState('Status');
 
   const rows = [
     createData(
       0,
-      "Bosh",
-      "Kanto",
-      "Eclipse Kanto is a modular IoT device for IoT with all home essentials."
+      'Bosh',
+      'Kanto',
+      'Eclipse Kanto is a modular IoT device for IoT with all home essentials.',
     ),
     createData(
       1,
-      "BMW",
-      "ConnectedDrive",
-      "Open data platform for drivers and third-party developers. "
+      'BMW',
+      'ConnectedDrive',
+      'Open data platform for drivers and third-party developers. ',
     ),
     createData(
       2,
-      "Cropin",
-      "Riler",
-      "IoT smart agriculture device are designed to help monitor crop fields using sensors and by automating irrigation systems."
+      'Cropin',
+      'Riler',
+      'IoT smart agriculture device are designed to help monitor crop fields using sensors and by automating irrigation systems.',
     ),
     createData(
       3,
-      "Samsung",
-      "Smarthing Ts",
-      "The SmartThings suite of devices lets you control all your smart home products from your phone."
+      'Samsung',
+      'Smarthing Ts',
+      'The SmartThings suite of devices lets you control all your smart home products from your phone.',
       // donationSuccessUNESCO
     ),
     createData(
       4,
-      "Tulip",
-      "Hand",
-      "Industry robot arm with computer vision and AI for industrial automation."
+      'Tulip',
+      'Hand',
+      'Industry robot arm with computer vision and AI for industrial automation.',
     ),
   ];
 

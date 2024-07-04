@@ -2,7 +2,6 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import transaction
 from django.http import JsonResponse
-from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
@@ -81,10 +80,10 @@ class PasswordRestRequestView(GenericAPIView):
                     encoded_pk = urlsafe_base64_encode(force_bytes(user.pk))
                     token = PasswordResetTokenGenerator().make_token(user)
                     current_site = get_current_site(request).domain
-                    relativeLinkBackend = reverse(
-                        "users:reset-password",
-                        kwargs={"encoded_pk": encoded_pk, "token": token},
-                    )
+                    # relativeLinkBackend = reverse(
+                    #     "users:reset-password",
+                    #     kwargs={"encoded_pk": encoded_pk, "token": token},
+                    # )
                     relativeLink = f"/resetpassword/{encoded_pk}/{token}"
                     if "localhost:8000" in current_site:
                         absurl = f"http://localhost:8080{relativeLink}"
@@ -92,7 +91,7 @@ class PasswordRestRequestView(GenericAPIView):
                         absurl = f"https://digitalraritieslab.net{relativeLink}"
                     data = {
                         "email_subject": "Password Reset Request",
-                        "email_body": f"Hi {user.user_name},\nPlease use the link below to reset your password\n{absurl}",
+                        "email_body": f"Hi {user.user_name},\nPlease use the link below to reset your password\n{absurl}",  # noqa: E501
                         "to_email": user.email,
                     }
                     # send email
@@ -108,7 +107,7 @@ class PasswordRestRequestView(GenericAPIView):
                     )
         except Exception as e:
             return JsonResponse(
-                {"message": "something is wrong with your email"},
+                {"message": f"something is wrong with your email. {e}"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -124,12 +123,12 @@ class ResetPasswordAPIView(GenericAPIView):
         """
         Verify token & encoded_pk and then reset the password.
         """
-        serializer = self.serializer_class(
-            data=request.data, context={"kwargs": kwargs}
-        )
+        serializer = self.serializer_class(data=request.data, context={"kwargs": kwargs})
         serializer.is_valid(raise_exception=True)
         return Response(
             {"message": "Password reset complete"},
             status=status.HTTP_200_OK,
         )
+
+
 #  test

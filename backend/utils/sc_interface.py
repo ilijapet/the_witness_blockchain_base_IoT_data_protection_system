@@ -1,22 +1,27 @@
 import json
-import os
-from web3 import Web3
-from dotenv import load_dotenv
-from eth_account.signers.local import LocalAccount
 import logging
 import os
 from typing import Dict
 
-load_dotenv()
+from dotenv import load_dotenv
+from eth_account.signers.local import LocalAccount
+from web3 import Web3
 
+load_dotenv()
 
 
 class BaseContract:
 
-    def __init__(self,):
+    def __init__(
+        self,
+    ):
         self.abi_path: str = os.environ.get("ABI_PATH")
-        self.inputbox_address: "address" = Web3.to_checksum_address(os.environ.get("INPUTBOX_ADDRESS"))
-        self.dapp_address: "address" = Web3.to_checksum_address(os.environ.get("DAPP_ADDRESS"))
+        self.inputbox_address: "address" = Web3.to_checksum_address(  # noqa: F821
+            os.environ.get("INPUTBOX_ADDRESS")
+        )
+        self.dapp_address: "address" = Web3.to_checksum_address(  # noqa: F821
+            os.environ.get("DAPP_ADDRESS")
+        )  # noqa: 821
         self.default_url: str = os.environ.get("DEFAULT_URL")
         try:
             self.w3 = Web3(Web3.HTTPProvider(self.default_url))
@@ -26,25 +31,23 @@ class BaseContract:
 
 
 class ContractInstatiator(BaseContract):
-    
+
     def __init__(self):
         super().__init__()
-        self.contract: "Contract" = self.contract_instance(self.abi_path)
+        self.contract: "Contract" = self.contract_instance(self.abi_path)  # noqa: 821
 
     # Return contract instance
-    def contract_instance(self, abi_path: str) -> "Contract":
+    def contract_instance(self, abi_path: str) -> "Contract":  # noqa: 821
         try:
             abi = ContractUtilities.load_abi(abi_path)
-            contract = self.w3.eth.contract(
-                address=self.inputbox_address, abi=abi
-            ) # type: ignore
+            contract = self.w3.eth.contract(address=self.inputbox_address, abi=abi)  # type: ignore
             return contract
         except Exception as e:
             logging.error(f"Error initializing contract_instance: {e}")
             raise e
 
 
-class ContractUtilities():        
+class ContractUtilities:
 
     @staticmethod
     def load_abi(abi_path: str) -> Dict | None:
@@ -71,21 +74,21 @@ class ContractUtilities():
         hex_s = "0x" + inputBytes.encode("utf-8").hex()
         return hex_s
 
+
 class SCInterface(ContractUtilities, ContractInstatiator):
 
-    account: LocalAccount 
+    account: LocalAccount
 
     # General setup
     def __init__(self):
         super().__init__()
-        
 
     def sendInput(self, value: dict) -> dict:
         hex_s: str = ContractUtilities.generate_hex(value)
-        tx_hash: Dict = self.contract.functions.addInput(self.dapp_address, hex_s).transact({"from": self.account.address})
+        tx_hash: Dict = self.contract.functions.addInput(self.dapp_address, hex_s).transact(
+            {"from": self.account.address}
+        )
         return tx_hash
-
-
 
 
 if __name__ == "__main__":
@@ -93,9 +96,3 @@ if __name__ == "__main__":
     contract = SCInterface()
     result = contract.sendInput(value)
     print(result)
-
-
-
-
-
-

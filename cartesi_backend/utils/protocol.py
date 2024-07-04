@@ -1,15 +1,14 @@
-from dotenv import load_dotenv
+import logging
+
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
-from Crypto.Hash import SHA256
-from Crypto.Cipher import PKCS1_OAEP
 from dotenv import load_dotenv
-import logging
 
 from .env_var_managment import GetVar
 
 load_dotenv()
-
 
 
 private_key_cartesi, public_key_cartesi = GetVar.get_env_var("CARTESI")
@@ -76,20 +75,21 @@ class WitnessProtocol:
         encrypted_message = WitnessProtocol.encrypt_message(message, public_key_cartesi)
         signature_a = WitnessProtocol.sign_message(encrypted_message, private_key_iot)
         return encrypted_message, signature_a, public_key_iot
-    
+
     @staticmethod
     def decrypt_verifay(received_encrypted_message, received_signature_a, public_key_iot):
-        is_signature_valid_a = WitnessProtocol.verify_signature(received_encrypted_message, received_signature_a, public_key_iot)
+        is_signature_valid_a = WitnessProtocol.verify_signature(
+            received_encrypted_message, received_signature_a, public_key_iot
+        )
         if is_signature_valid_a:
-            decrypted_message = WitnessProtocol.decrypt_message(received_encrypted_message, private_key_cartesi)
-            print("Message from IoT device to Cartrsi backend via Django server:", decrypted_message.decode())
-            print("Signature verification from node A): Valid")        
+            decrypted_message = WitnessProtocol.decrypt_message(
+                received_encrypted_message, private_key_cartesi
+            )
+            print(
+                "Message from IoT device to Cartrsi backend via Django server:",
+                decrypted_message.decode(),
+            )
+            print("Signature verification from node A): Valid")
             return decrypted_message
         else:
             print("Signature verification (Node A): Invalid")
-
-if __name__ == "__main__":
-        print("Task executed successfully.")
-        result = WitnessProtocol.decrypt_verifay(body["data"], body["signature"], body["public_key"])
-
-

@@ -1,15 +1,13 @@
 # from django.shortcuts import render
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-
-from .models import OrderHistory
-from .serializers import OrderHistorySerializer, OrderHistorySerializerEntry
-from rest_framework.views import APIView
-
-# from django.http import JsonResponse
 
 #  import Response, status
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.views import APIView
+
+from .models import OrderHistory
+from .serializers import OrderHistorySerializer, OrderHistorySerializerEntry
 
 
 class OrderView(APIView):

@@ -1,12 +1,8 @@
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
-from django.utils.encoding import force_bytes, smart_bytes, smart_str
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode
 from rest_framework import serializers
 
 from .models import NewUser, UserProfile
-from .utils import send_normal_email
 
 
 class NewUserSerializer(serializers.ModelSerializer):
@@ -18,7 +14,6 @@ class NewUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop("password", None)
-        # as long as the fields are the same, we can just use this
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
@@ -37,10 +32,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "total_paid",
             "nft_ids",
         )
-
-    # TODO: add user field
-    # user = models.OneToOneField(NewUser, on_delete=models.CASCADE, default=None)
-    # nft_metadata
 
 
 class PasswordRestSerializer(serializers.Serializer):
@@ -69,10 +60,14 @@ class ResetPasswordSerializer(serializers.Serializer):
             user = NewUser.objects.get(pk=pk)
 
             if not PasswordResetTokenGenerator().check_token(user, token):
-                raise serializers.ValidationError("Rest token is not valid, please request a new one")
+                raise serializers.ValidationError(
+                    "Rest token is not valid, please request a new one"
+                )
 
             user.set_password(password)
             user.save()
             return value
         except Exception:
-            raise serializers.ValidationError("Something went wrong in reset token validation process")
+            raise serializers.ValidationError(
+                "Something went wrong in reset token validation process"
+            )

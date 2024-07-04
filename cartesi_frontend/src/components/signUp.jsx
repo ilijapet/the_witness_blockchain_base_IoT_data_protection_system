@@ -1,30 +1,30 @@
 // import * as React from "react";
-import { useHistory } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import { TextField, Stack } from "@mui/material";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { ThemeProvider } from "@mui/material/styles";
-import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+import { useHistory } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import { TextField, Stack } from '@mui/material';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { ThemeProvider } from '@mui/material/styles';
+import { useForm } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 // import { green } from "@mui/material/colors";
 
-import { axiosInstance } from "../axios";
-import defaultTheme from "../utils";
-import Copyright from "./Copyright";
+import { axiosInstance } from '../axios';
+import defaultTheme from '../utils';
+import Copyright from './Copyright';
 
 export default function SignUp() {
   const form = useForm({
     defualtValues: {
-      email: "",
-      password: "",
-      username: "",
+      email: '',
+      password: '',
+      username: '',
     },
   });
 
@@ -35,19 +35,19 @@ export default function SignUp() {
 
   const handler = async (event) => {
     await axiosInstance
-      .post("user/register/", {
-        email: event["email"],
-        password: event["password"],
-        user_name: event["username"],
+      .post('user/register/', {
+        email: event['email'],
+        password: event['password'],
+        user_name: event['username'],
       })
       .then((res) => {
-        history.push("/");
+        history.push('/');
         console.log(res);
         console.log(res.data);
       })
       .catch((error) => {
-        console.error("There was an error!", error.response.data);
-        alert("There was an error!");
+        console.error('There was an error!', error.response.data);
+        alert('There was an error!');
       });
   };
 
@@ -58,12 +58,12 @@ export default function SignUp() {
         <Box
           sx={{
             marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -82,8 +82,8 @@ export default function SignUp() {
                     id="firstName"
                     label="Username"
                     autoFocus
-                    {...register("username", {
-                      required: "Username is required",
+                    {...register('username', {
+                      required: 'Username is required',
                     })}
                     error={!!errors.username}
                     helperText={errors.username?.message}
@@ -97,7 +97,7 @@ export default function SignUp() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    {...register("email", { required: "Email is required" })}
+                    {...register('email', { required: 'Email is required' })}
                     error={!!errors.email}
                     helperText={errors.email?.message}
                   />
@@ -111,8 +111,8 @@ export default function SignUp() {
                     type="password"
                     id="password"
                     autoComplete="new-password"
-                    {...register("password", {
-                      required: "Password is required",
+                    {...register('password', {
+                      required: 'Password is required',
                     })}
                     error={!!errors.password}
                     helperText={errors.password?.message}

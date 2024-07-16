@@ -34,13 +34,15 @@ class ContractInstatiator(BaseContract):
 
     def __init__(self):
         super().__init__()
-        self.contract: "Contract" = self.contract_instance(self.abi_path)  # noqa: 821
+        self.contract: "Contract" = self.contract_instance(
+            self.abi_path, self.inputbox_address
+        )  # noqa: 821
 
     # Return contract instance
-    def contract_instance(self, abi_path: str) -> "Contract":  # noqa: 821
+    def contract_instance(self, abi_path: str, address: str) -> "Contract":  # noqa: 821
         try:
             abi = ContractUtilities.load_abi(abi_path)
-            contract = self.w3.eth.contract(address=self.inputbox_address, abi=abi)  # type: ignore
+            contract = self.w3.eth.contract(address, abi=abi)  # type: ignore
             return contract
         except Exception as e:
             logging.error(f"Error initializing contract_instance: {e}")
@@ -92,7 +94,10 @@ class SCInterface(ContractUtilities, ContractInstatiator):
 
 
 if __name__ == "__main__":
-    value = {"proba": "jeda dva"}
-    contract = SCInterface()
-    result = contract.sendInput(value)
-    print(result)
+    sc = SCInterface()
+    result = sc.w3.eth.get_code(sc.dapp_address)
+    if result.hex() == "0x":
+        print("Contract not deployed")
+    else:
+        print("Contract deployed")
+        print(result)

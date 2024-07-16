@@ -13,7 +13,7 @@ from sqlalchemy.sql import func
 load_dotenv()
 
 # TODO: do this only ones when the app is started
-engine = create_engine("sqlite:////home/ilija/code/device_data_integrity_system/backend/witness.db")
+engine = create_engine("sqlite:////opt/cartesi/dapp/utils/witness.db")
 Base = declarative_base()
 
 
@@ -87,6 +87,7 @@ class DatabaseSessionManager:
 class Database(DatabaseSessionManager, Helpers):
     def __init__(self, engine):
         super().__init__(engine)
+        self.create_table()
 
     def create_table(self):
         try:
@@ -144,8 +145,22 @@ class Database(DatabaseSessionManager, Helpers):
                 print(f"No car found with public_key: {public_key}")
 
 
+database = Database(engine)
+database.create_table()
+data = {
+    "uuid": "39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9",
+    "brake_status": False,
+    "tires_status": False,
+    "engine_status": False,
+    "distance": 5,
+    "create_at": func.now(),
+}
+database.insert_data(data)
+
+
 if __name__ == "__main__":
     database = Database(engine)
+    database.create_table()
     data = {
         "uuid": "39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9",
         "brake_status": False,
@@ -154,7 +169,6 @@ if __name__ == "__main__":
         "distance": 5,
         "create_at": func.now(),
     }
-    # database.update_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9", data)
-    # database.create_table()
     database.insert_data(data)
+    # database.update_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9", data)
     # print(database.get_data("39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9"))

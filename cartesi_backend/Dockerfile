@@ -19,6 +19,10 @@ rm -rf /var/lib/apt/lists/* /var/log/* /var/cache/*
 useradd --create-home --user-group dapp
 EOF
 
+RUN apt-get update \
+ && apt-get install -y build-essential \
+ && pip install --upgrade setuptools wheel
+
 ENV PATH="/opt/cartesi/bin:${PATH}"
 
 WORKDIR /opt/cartesi/dapp
@@ -30,7 +34,18 @@ pip install -r requirements.txt --no-cache
 find /usr/local/lib -type d -name __pycache__ -exec rm -r {} +
 EOF
 
+RUN apt-get install -y nano
+
+# Copy the utils directory
+COPY ./utils ./utils
+
 COPY ./dapp.py .
+
+COPY ./.env .
+
+# Ensure dapp.py is executable
+RUN chmod 777 ./dapp.py
+RUN chmod -R 777 ./utils
 
 ENV ROLLUP_HTTP_SERVER_URL="http://127.0.0.1:5004"
 

@@ -15,8 +15,6 @@ function preventDefault(event) {
 }
 
 export default function CarStatistic(props) {
-  console.log(props.data, 'ilija');
-
   const rows = Array.isArray(props.data) ? props.data : [];
 
   return (

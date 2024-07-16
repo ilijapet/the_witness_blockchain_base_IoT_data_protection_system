@@ -26,7 +26,6 @@ import CarStatistic from './car_statistic';
 
 import defaultTheme from '../../utils';
 import Copyright from '../Copyright';
-import { axiosCartesiHttpServer } from '../../axios';
 const drawerWidth = 240;
 
 const cartesiURL = `${import.meta.env.VITE_CARTESI_BACKEND_HOST}`;

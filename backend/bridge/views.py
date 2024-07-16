@@ -6,6 +6,9 @@ from utils.sc_interface import SCInterface
 
 class BridgeView(APIView):
 
+    def __init__(self):
+        self.contract = SCInterface()
+
     def post(self, request):
         try:
             data = request.data
@@ -14,8 +17,7 @@ class BridgeView(APIView):
                 "signature": data["signature"],
                 "public_key": data["public_key"],
             }
-            contract = SCInterface()
-            contract.sendInput(value)
+            self.contract.sendInput(value)
             return HTTPResponse(status=200)
         except Exception as e:
             return HTTPResponse(status=500, data={"error": str(e)})

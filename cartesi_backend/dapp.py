@@ -108,7 +108,6 @@ def handle_inspect(data):
     handler = inspect_method_handlers.get(method)
     if not handler:
         return "reject"
-
     return handler(method)
 
 

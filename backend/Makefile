@@ -1,19 +1,19 @@
 # Poetry commands
 .PHONY: env
 env:
-	poetry shell
+	source .venv/bin/activate
 
 .PHONY: deact
 deact:
-	poetry exit
+	deactivate
 
 # Django commands
 # Run Django server
 .PHONY: server
 server:
-	poetry run python -m manage runserver
+	python -m manage runserver 8005
 
 # Run Django migrations
 .PHONY: migrate
 migrate:
-	poetry run python -m manage makemigrations; poetry run python -m manage migrate
+	python -m manage makemigrations; poetry run python -m manage migrate

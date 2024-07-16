@@ -12,10 +12,6 @@ from .protocol import WitnessProtocol
 
 load_dotenv()
 
-# engine = create_engine('sqlite:///../witness.db')
-# Base = declarative_base()
-# Session = sessionmaker(bind=engine)
-
 
 class IotDataGenerator:
     def __init__(self):

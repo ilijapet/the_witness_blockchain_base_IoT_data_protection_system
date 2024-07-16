@@ -97,7 +97,25 @@ Data integrity as service: where we provide a network of validators and full sof
 
 Second solution could be that a company or industrial branch organises their own network of validators supported by an interested user organisations or even customer protection organisations (who can potentially be interested in) and create a network of node validators to monitor data integrity on their own vehicles and other IoT devices.
 
-=======
+## How to run and test The Witness dapp locally on your machine?
 
-TODO: make step by step guide on App usage
-TODO: add need for EMAIL_HOST_PASSWORD to load from .env + generating app password if using google + change email in django settings
+You need to have on your machine Python, Cartesi CLI, Yarn and Docker. Beside this you will need to
+run following steps:
+
+1. `git clone https://github.com/ilijapet/the_witness_blockchain_base_IoT_data_protection_system`
+
+2. cd into `cartesi_backend`
+
+3. run `cartesi build` and then `cartesu run`
+
+4. Open separate terminal and cd into `backend` folder
+
+5. Run `python -m venv .venv && source .venv/bin/activate`
+
+6. `pip install -r requirements.txt` and then `python -m manage runserver 8005`
+
+7. cd into `cartesi_frontend` and run `yarn install` and then `yarn run dev` for React frontend server
+
+8. Then you can just go to The Witness frontend via `http://localhost:8081/` and login in with test email `ilijapet@gmail.com` with test password `Meridseli1986!`
+
+At this point you will be able to monitor basic car performance generated via our mock script in Django backend and passed through set of Cartesi contracts and then to our Cartesi backend.

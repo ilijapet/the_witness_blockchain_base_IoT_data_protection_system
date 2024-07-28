@@ -73,12 +73,8 @@ class WitnessProtocol:
     @staticmethod
     def encrypt_sign(message, public_key_cartesi, private_key_iot, public_key_iot):
         encrypted_message = WitnessProtocol.encrypt_message(message, public_key_cartesi)
-
         signature_a = WitnessProtocol.sign_message(encrypted_message, private_key_iot)
-
-        received_encrypted_message = encrypted_message
-        received_signature_a = signature_a
-        return received_encrypted_message, received_signature_a, public_key_iot
+        return encrypted_message, signature_a, public_key_iot
 
     @staticmethod
     def decrypt_verifay(received_encrypted_message, received_signature_a, public_key_iot):

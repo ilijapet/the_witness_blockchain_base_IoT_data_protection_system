@@ -16,9 +16,15 @@ SECRET_KEY = "django-insecure-j2*l!eb^u!56eioy94sh^@bh(%97212dnb1#zpgb#@gl1mjk%c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CORS_ALLOW_ALL_ORIGINS = False
+ORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8081",
+    "https://backend-cartesi.fly.dev",
+    "http://localhost:8000",
+]
+
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    "https://backend-cartesi.fly.dev",
 ]
 
 # Application definition
@@ -186,6 +192,11 @@ PUBLIC_KEY_3 = os.getenv("PUBLIC_KEY_3")
 PRIVATE_KEY_CARTESI = os.getenv("PRIVATE_KEY_CARTESI")
 PUBLIC_KEY_CARTESI = os.getenv("PUBLIC_KEY_CARTESI")
 
+ALLOWED_HOSTS = [
+    "backend-cartesi.fly.dev",
+    "localhost",
+    "127.0.0.1",
+]
 
 LOGGING = {
     "version": 1,

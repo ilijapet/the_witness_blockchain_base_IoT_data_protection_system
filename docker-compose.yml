@@ -10,7 +10,7 @@ services:
       - ./backend:/usr/src/app
     ports:
       - 8005:8005
-    command: poetry run python -m manage runserver 0.0.0.0:8005
+    command: python -m manage runserver 0.0.0.0:8005
   frontend:
     build:
       context: ./cartesi_frontend

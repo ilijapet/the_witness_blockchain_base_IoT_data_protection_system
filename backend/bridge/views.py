@@ -1,6 +1,5 @@
 from rest_framework.response import Response as HTTPResponse
 from rest_framework.views import APIView
-
 from utils.sc_interface import SCInterface
 
 

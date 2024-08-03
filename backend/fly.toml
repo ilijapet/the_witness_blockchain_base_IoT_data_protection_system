@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for backend-cartesi on 2024-07-31T22:13:49+02:00
+# fly.toml app configuration file generated for backend-cartesi on 2024-08-03T18:46:49+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'backend-cartesi'
-primary_region = 'lhr'
+primary_region = 'ams'
 console_command = '/code/manage.py shell'
 
 [build]

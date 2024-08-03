@@ -18,8 +18,9 @@ DEBUG = True
 
 ORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "https://backend-cartesi.fly.dev",
+    "https://cartesi-frontend.fly.dev",
     "http://localhost:8000",
+    "http://localhost:80",
 ]
 
 # CSRF settings

@@ -12,7 +12,6 @@ from sqlalchemy.sql import func
 
 load_dotenv()
 
-# TODO: do this only ones when the app is started
 engine = create_engine("sqlite:////opt/cartesi/dapp/utils/witness.db")
 Base = declarative_base()
 
@@ -145,17 +144,17 @@ class Database(DatabaseSessionManager, Helpers):
                 print(f"No car found with public_key: {public_key}")
 
 
-database = Database(engine)
-database.create_table()
-data = {
-    "uuid": "39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9",
-    "brake_status": False,
-    "tires_status": False,
-    "engine_status": False,
-    "distance": 5,
-    "create_at": func.now(),
-}
-database.insert_data(data)
+# database = Database(engine)
+# database.create_table()
+# data = {
+#     "uuid": "39bf0b6f33eb720e3681896aaf5f6a1a3cbf98d17c99df389562995612b515c9",
+#     "brake_status": False,
+#     "tires_status": False,
+#     "engine_status": False,
+#     "distance": 5,
+#     "create_at": func.now(),
+# }
+# database.insert_data(data)
 
 
 if __name__ == "__main__":

@@ -17,9 +17,9 @@ class IotDataGeneratorConfig(AppConfig):
         print(f"Traceback: {event.traceback}")
 
     def ready(self):
-        if "runserver" in sys.argv:
-            scheduler = BackgroundScheduler()
-            iot = IotDataGenerator()
-            scheduler.add_job(iot.iot_data_generator, "interval", seconds=30)
-            scheduler.add_listener(self.handle_errors, EVENT_JOB_ERROR)
-            scheduler.start()
+        # if "runserver" in sys.argv:
+        scheduler = BackgroundScheduler()
+        iot = IotDataGenerator()
+        scheduler.add_job(iot.iot_data_generator, "interval", seconds=60)
+        scheduler.add_listener(self.handle_errors, EVENT_JOB_ERROR)
+        scheduler.start()

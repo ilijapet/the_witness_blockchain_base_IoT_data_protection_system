@@ -21,6 +21,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://cartesi-frontend.fly.dev",
     "http://localhost:8000",
     "http://localhost:80",
+    "http://localhost:8080",
 ]
 
 # CSRF settings

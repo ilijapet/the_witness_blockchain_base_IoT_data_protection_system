@@ -100,7 +100,6 @@ export default function Dashboard() {
       );
       if (response.status === 200) {
         const result = await response.json();
-        console.log(result.reports);
         return result.reports;
       } else {
         console.log(await response.text());

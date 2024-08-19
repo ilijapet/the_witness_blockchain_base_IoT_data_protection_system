@@ -31,13 +31,10 @@ export default function ForgetPassword() {
   const forgetPassword = async (event) => {
     try {
       const email = event['email'];
-      console.log(email);
       const response = await axiosInstance.post(
         'user/resetpassword/',
         JSON.stringify({ email }),
       );
-
-      console.log(response.data['absurl']);
 
       // Here Im going to redirect to the reset password confirmation page
       history.push({

@@ -23,7 +23,6 @@ export default function ResetConfirmation() {
 
   let location = useLocation();
   let absurl = location.state.absurl;
-  console.log(absurl);
 
   return (
     <ThemeProvider theme={defaultTheme}>

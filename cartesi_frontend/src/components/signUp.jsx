@@ -42,8 +42,6 @@ export default function SignUp() {
       })
       .then((res) => {
         history.push('/');
-        console.log(res);
-        console.log(res.data);
       })
       .catch((error) => {
         console.error('There was an error!', error.response.data);

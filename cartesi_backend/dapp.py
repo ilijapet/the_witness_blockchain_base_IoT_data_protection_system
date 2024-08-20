@@ -7,7 +7,6 @@ import traceback
 from os import environ
 
 import requests
-
 from utils.data_processing import Database, engine
 from utils.protocol import WitnessProtocol
 
@@ -19,6 +18,7 @@ logger = logging.getLogger(__name__)
 rollup_server = environ["ROLLUP_HTTP_SERVER_URL"]
 
 logger.info(f"HTTP rollup_server url is {rollup_server}")
+logger.info("We are in...")
 
 
 def hex2str(hex):
@@ -37,6 +37,7 @@ def str2hex(str):
 
 
 def hash_public_key(public_key):
+    logger.info(f"Adding report {public_key}")
     hash_obj = hashlib.sha256()
     hash_obj.update(public_key)
     hash_hex = hash_obj.hexdigest()
@@ -53,6 +54,8 @@ def add_report(output=""):
 def get_user_data(data):
     _, public_key = Database.get_env_var(1)
     digest = hash_public_key(public_key)
+    logger.info(f"Digest {public_key}")
+    logger.info(f"Digest {digest}")
     user_data = database.get_data(digest)
     if not user_data:
         return "reject"
@@ -130,7 +133,9 @@ while True:
         logger.info("No pending rollup request, trying again")
     else:
         rollup_request = response.json()
+        logger.info(f"Request type {rollup_request['request_type']}")
         data = rollup_request["data"]
+        logger.info(f"Data {data}")
 
         handler = handlers[rollup_request["request_type"]]
         finish["status"] = handler(rollup_request["data"])

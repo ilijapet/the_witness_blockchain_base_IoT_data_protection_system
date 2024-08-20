@@ -1,13 +1,12 @@
 import json
 import logging
 import os
+from pathlib import Path
 from typing import Dict
 
-from dotenv import load_dotenv
+from django.conf import settings
 from eth_account.signers.local import LocalAccount
 from web3 import Web3
-
-load_dotenv()
 
 
 class BaseContract:
@@ -15,17 +14,17 @@ class BaseContract:
     def __init__(
         self,
     ):
-        self.abi_path: str = os.environ.get("ABI_PATH")
+        self.abi_path: str = settings.ABI_PATH
         self.inputbox_address: "address" = Web3.to_checksum_address(  # noqa: F821
-            os.environ.get("INPUTBOX_ADDRESS")
+            settings.INPUTBOX_ADDRESS
         )
         self.dapp_address: "address" = Web3.to_checksum_address(  # noqa: F821
-            os.environ.get("DAPP_ADDRESS")
+            settings.DAPP_ADDRESS
         )  # noqa: 821
-        self.default_url: str = os.environ.get("DEFAULT_URL")
+        self.default_url: str = settings.DEFAULT_URL
         try:
             self.w3 = Web3(Web3.HTTPProvider(self.default_url))
-            self.account = self.w3.eth.account.from_key(os.environ.get("PRIVATE_KEY_FOUNDRY"))
+            self.account = self.w3.eth.account.from_key(settings.PRIVATE_KEY_FOUNDRY)
         except Exception as e:
             logging.error(f"Error initializing BaseContract: {e}")
 

@@ -5,8 +5,8 @@ from pathlib import Path
 from django.conf import settings
 from dotenv import load_dotenv
 
-load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -171,20 +171,9 @@ SIMPLE_JWT = {
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "tavolo.trentino@gmail.com"
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-# IoT mock data generator related keys
-PRIVATE_KEY_1 = os.getenv("PRIVATE_KEY_1")
-PUBLIC_KEY_1 = os.getenv("PUBLIC_KEY_1")
-PRIVATE_KEY_2 = os.getenv("PRIVATE_KEY_2")
-PUBLIC_KEY_2 = os.getenv("PUBLIC_KEY_2")
-PRIVATE_KEY_3 = os.getenv("PRIVATE_KEY_3")
-PUBLIC_KEY_3 = os.getenv("PUBLIC_KEY_3")
-PRIVATE_KEY_CARTESI = os.getenv("PRIVATE_KEY_CARTESI")
-PUBLIC_KEY_CARTESI = os.getenv("PUBLIC_KEY_CARTESI")
 
 
 LOGGING = {
@@ -200,3 +189,60 @@ LOGGING = {
         "level": "DEBUG",
     },
 }
+
+
+def load_environment_variables(env_file=None):
+    if env_file:
+        load_dotenv(dotenv_path=env_file)
+    else:
+        load_dotenv()
+    keys = [
+        "EMAIL_HOST_PASSWORD",
+        "PRIVATE_KEY_1",
+        "PUBLIC_KEY_1",
+        "PRIVATE_KEY_2",
+        "PUBLIC_KEY_2",
+        "PRIVATE_KEY_3",
+        "PUBLIC_KEY_3",
+        "PRIVATE_KEY_CARTESI",
+        "PUBLIC_KEY_CARTESI",
+        "PRIVATE_KEY_FOUNDRY",
+        "INPUTBOX_ADDRESS",
+        "DAPP_ADDRESS",
+        "DEFAULT_URL",
+        "ABI_PATH",
+        "ROLLUP_HTTP_SERVER_URL",
+        "ENVIRONMENT",
+    ]
+
+    return {key: os.getenv(key) for key in keys}
+
+
+file_path = os.path.join(BASE_DIR, ".env_dev")
+
+if os.path.exists(file_path):
+    print("Development")
+    env_vars = load_environment_variables(env_file=file_path)
+else:
+    print("Production")
+    env_vars = load_environment_variables()
+
+
+(
+    EMAIL_HOST_PASSWORD,
+    PRIVATE_KEY_1,
+    PUBLIC_KEY_1,
+    PRIVATE_KEY_2,
+    PUBLIC_KEY_2,
+    PRIVATE_KEY_3,
+    PUBLIC_KEY_3,
+    PRIVATE_KEY_CARTESI,
+    PUBLIC_KEY_CARTESI,
+    PRIVATE_KEY_FOUNDRY,
+    INPUTBOX_ADDRESS,
+    DAPP_ADDRESS,
+    DEFAULT_URL,
+    ABI_PATH,
+    ROLLUP_HTTP_SERVER_URL,
+    ENVIRONMENT,
+) = (env_vars[key] for key in env_vars)

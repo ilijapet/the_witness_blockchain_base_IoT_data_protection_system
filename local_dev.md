@@ -7,7 +7,7 @@
 
 Add `.env` file to `cartesi_frontend` and to `cartesi_backend`. Then add `.env_dev` to backend
 
-### Create activate .venvs, install dependencies, build docker image and run containers and servers
+### Create, activate venv's, install dependencies, build docker image and run containers and servers
 
 #### Backend
 

@@ -50,6 +50,6 @@ From cartesi_backend
 
 From backend folder
 
-    python -m manager runserver 8005
+    python -m manage runserver 8005
 
 Then go to the front-end, log as superuser for example and check how The Witness dapp is working

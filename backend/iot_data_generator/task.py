@@ -52,17 +52,13 @@ class IotDataGenerator:
         return json.dumps(data)
 
     def iot_data_generator(self, job=None):
-        _, public_key_cartesi = GetVar.get_env_var("CARTESI")
+        private_key_iot, public_key_iot = GetVar.get_env_var(1)
         data = self.generate_random_iot_data()
-        received_encrypted_message, received_signature_a, self.public_key_iot = (
-            WitnessProtocol.encrypt_sign(
-                data, public_key_cartesi, self.private_key_iot, self.public_key_iot
-            )
-        )
+        digital_signature = WitnessProtocol.sign_message(data.encode(), private_key_iot)
         body = {
-            "data": received_encrypted_message,
-            "signature": received_signature_a,
-            "public_key": self.public_key_iot,
+            "data": data.encode(),
+            "signature": digital_signature,
+            "public_key": public_key_iot,
         }
         for key, value in body.items():
             body[key] = base64.b64encode(value).decode()

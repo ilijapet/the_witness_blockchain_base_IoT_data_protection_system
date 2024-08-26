@@ -3,7 +3,6 @@ import sys
 from apscheduler.events import EVENT_JOB_ERROR
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.apps import AppConfig
-
 from iot_data_generator.task import IotDataGenerator
 
 

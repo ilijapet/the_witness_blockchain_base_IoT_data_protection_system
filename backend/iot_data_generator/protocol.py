@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 
 from .env_var_managment import GetVar
 
+# from env_var_managment import GetVar
+
+
 load_dotenv()
 
 
@@ -97,3 +100,62 @@ class WitnessProtocol:
             return decrypted_message
         else:
             print("Signature verification (Node A): Invalid")
+
+
+if __name__ == "__main__":
+    import base64
+    import datetime
+    import hashlib
+    import json
+    import logging
+    import traceback
+    from os import environ
+
+    import requests
+
+    logging.basicConfig(level="INFO")
+    logger = logging.getLogger(__name__)
+
+    def hash_public_key(public_key):
+        logger.info(f"Adding report {public_key}")
+        hash_obj = hashlib.sha256()
+        hash_obj.update(public_key)
+        hash_hex = hash_obj.hexdigest()
+        return hash_hex
+
+    def handle_advance(data):
+        logger.info(f"Received advance request data {data}")
+
+        status = "accept"
+        try:
+            result = WitnessProtocol.verify_signature(
+                data["data"].encode(), data["signature"], data["public_key"]
+            )
+            print(result)
+
+            if result:
+                digest = hash_public_key(data["public_key"])
+                data_dict = json.loads(data["data"])
+                print(data_dict)
+
+            # Emits notice with result of calculation
+            logger.info(f"Adding notice with payload: '{input}'")
+
+        except Exception as e:
+            status = "reject"
+            msg = f"Error {e} processing data  {data}\n{traceback.format_exc()}"
+            logger.error(msg)
+            logger.info(f"Received report status {response.status_code} body {response.content}")
+
+        return status
+
+    private_key_cartesi, public_key_cartesi = GetVar.get_env_var("CARTESI")
+    data = '{"type": "statistic", "distance": 8594, "break_status": 0, "tires_status": 0, "engine_status": 1, "created_at": "2024-08-24T15:42:56.212955"}'
+    digital_signature = WitnessProtocol.sign_message(data.encode(), private_key_cartesi)
+    value = {
+        "data": data,
+        "signature": digital_signature,
+        "public_key": public_key_cartesi,
+    }
+
+    a = handle_advance(value)

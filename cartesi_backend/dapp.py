@@ -25,6 +25,7 @@ def hex2str(hex):
     """
     Decodes a hex string into a regular string
     """
+    logger.info("Hex")
     result = bytes.fromhex(hex[2:]).decode("utf-8")
     return json.loads(result)
 
@@ -70,23 +71,26 @@ def handle_advance(data):
     status = "accept"
     try:
         input_data = hex2str(data["payload"])
-        logger.info(f"Received input: {input}")
+        logger.info(f"Received input: {input_data}")
         for key, value in input_data.items():
             data[key] = base64.b64decode(value)
-        message = WitnessProtocol.decrypt_verifay(
+        result = WitnessProtocol.verify_signature(
             data["data"], data["signature"], data["public_key"]
         )
-        publick_key = data["public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
-        digest = hash_public_key(publick_key)
-        str_data = message.decode("utf-8")
-        data_dict = json.loads(str_data)
-        database.update_data(digest, data_dict)
 
-        # Evaluates expression
+        if result:
+            logger.info("Result is true")
+            publick_key = data["public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
+            logger.info("Public key")
+            digest = hash_public_key(publick_key)
+            logger.info(f"Digest {digest}")
+            data_dict = json.loads(data["data"])
+            logger.info(f"Data dict {data_dict}")
+            database.update_data(digest, data_dict)
+
         logger.info(f"HTTP rollup_server url is {rollup_server}")
 
-        # Emits notice with result of calculation
-        logger.info(f"Adding notice with payload: '{input}'")
+        logger.info(f"Adding notice with payload: '{input_data}'")
         response = requests.post(rollup_server + "/notice", json={"payload": str2hex(str(input))})
         logger.info(f"Received notice status {response.status_code} body {response.content}")
 
@@ -126,6 +130,7 @@ handlers = {
 
 while True:
     logger.info("Sending finish")
+    logger.info("Sending Ilija")
     response = requests.post(rollup_server + "/finish", json=finish)
     logger.info(f"Received finish status {response.status_code}")
     logger.info("Time:" + str(datetime.datetime.now()))

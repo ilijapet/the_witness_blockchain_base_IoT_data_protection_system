@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "iot_data_generator.apps.IotDataGeneratorConfig",
     "dashboard.apps.DashboardConfig",
     "bridge.apps.BridgeConfig",
+    "iot_registration.apps.IotRegistrationConfig",
     "rest_framework_simplejwt.token_blacklist",
 ]
 

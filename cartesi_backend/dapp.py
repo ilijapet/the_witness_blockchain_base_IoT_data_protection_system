@@ -16,9 +16,7 @@ logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
 
 rollup_server = environ["ROLLUP_HTTP_SERVER_URL"]
-
 logger.info(f"HTTP rollup_server url is {rollup_server}")
-logger.info("We are in...")
 
 
 def hex2str(hex):
@@ -64,43 +62,69 @@ def get_user_data(data):
     return "accept"
 
 
-# TODO: take out update_data from handle_advance and put it in a separate function
+def add_iot_keys(data):
+    status = "accept"
+    try:
+        public_key = data["iot_public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
+        digest = {"uuid": hash_public_key(public_key)}
+        database.insert_data(digest)
+        logger.info(f"New IoT public key inserted")
+        add_report(f"New uuid added {digest}")
+        return status
+    except Exception as e:
+        status = "reject"
+        msg = f"Error {e} processing data\n{traceback.format_exc()}"
+        logger.error(msg)
+        response = requests.post(rollup_server + "/report", json={"payload": str2hex(msg)})
+        logger.info(f"Received report status {response.status_code} body {response.content}")
+
+
+def update_data(data):
+    result = WitnessProtocol.verify_signature(data["data"], data["signature"], data["public_key"])
+    if result:
+        logger.info("Result is true")
+        public_key = data["public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
+        digest = hash_public_key(public_key)
+        logger.info(f"Digest {digest}")
+        device = database.get_data(digest)
+        if device:
+            data_dict = json.loads(data["data"])
+            logger.info(f"Data dict {data_dict}")
+            database.update_data(digest, data_dict)
+            add_report("Data updated")
+            return "accept"
+    else:
+        logger.info("Signature not valid")
+        add_report("Signature verification failed")
+        return "reject"
+
+
 def handle_advance(data):
     logger.info(f"Received advance request data {data}")
-
     status = "accept"
     try:
         input_data = hex2str(data["payload"])
         logger.info(f"Received input: {input_data}")
         for key, value in input_data.items():
             data[key] = base64.b64decode(value)
-        result = WitnessProtocol.verify_signature(
-            data["data"], data["signature"], data["public_key"]
-        )
+        if "iot_public_key" in data:
+            logger.info("Inside iot public data")
+            add_iot_keys(data)
+        elif "public_key" in data:
+            update_data(data)
+            logger.info(f"HTTP rollup_server url is {rollup_server}")
 
-        if result:
-            logger.info("Result is true")
-            publick_key = data["public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
-            logger.info("Public key")
-            digest = hash_public_key(publick_key)
-            logger.info(f"Digest {digest}")
-            data_dict = json.loads(data["data"])
-            logger.info(f"Data dict {data_dict}")
-            database.update_data(digest, data_dict)
-
-        logger.info(f"HTTP rollup_server url is {rollup_server}")
-
-        logger.info(f"Adding notice with payload: '{input_data}'")
-        response = requests.post(rollup_server + "/notice", json={"payload": str2hex(str(input))})
-        logger.info(f"Received notice status {response.status_code} body {response.content}")
-
+            logger.info(f"Adding notice with payload: '{input_data}'")
+            response = requests.post(
+                rollup_server + "/notice", json={"payload": str2hex(str(input_data))}
+            )
+            logger.info(f"Received notice status {response.status_code} body {response.content}")
     except Exception as e:
         status = "reject"
         msg = f"Error {e} processing data  {data}\n{traceback.format_exc()}"
         logger.error(msg)
         response = requests.post(rollup_server + "/report", json={"payload": str2hex(msg)})
         logger.info(f"Received report status {response.status_code} body {response.content}")
-
     return status
 
 
@@ -130,7 +154,6 @@ handlers = {
 
 while True:
     logger.info("Sending finish")
-    logger.info("Sending Ilija")
     response = requests.post(rollup_server + "/finish", json=finish)
     logger.info(f"Received finish status {response.status_code}")
     logger.info("Time:" + str(datetime.datetime.now()))

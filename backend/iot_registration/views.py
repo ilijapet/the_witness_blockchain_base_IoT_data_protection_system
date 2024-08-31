@@ -19,7 +19,7 @@ class RegistrationView(APIView):
             }
             for key, value in body.items():
                 body[key] = base64.b64encode(value).decode()
-            tx_hash = self.contract.sendInput(body)
+            self.contract.sendInput(body)
             return HTTPResponse(status=200)
         except Exception as e:
             return HTTPResponse(status=500, data={"error": str(e)})

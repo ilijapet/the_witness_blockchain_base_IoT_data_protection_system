@@ -36,6 +36,9 @@ def str2hex(str):
 
 
 def hash_public_key(public_key):
+    """
+    Hashes a public key
+    """
     logger.info(f"Adding report {public_key}")
     hash_obj = hashlib.sha256()
     hash_obj.update(public_key)
@@ -44,6 +47,9 @@ def hash_public_key(public_key):
 
 
 def add_report(output=""):
+    """
+    Adds a report to the rollup server
+    """
     logger.info("Adding report " + output)
     report = {"payload": str2hex(output)}
     response = requests.post(rollup_server + "/report", json=report)
@@ -51,10 +57,11 @@ def add_report(output=""):
 
 
 def get_user_data(data):
+    """
+    Gets user data from the database
+    """
     _, public_key = Database.get_env_var(1)
     digest = hash_public_key(public_key)
-    logger.info(f"Digest {public_key}")
-    logger.info(f"Digest {digest}")
     user_data = database.get_data(digest)
     if not user_data:
         return "reject"
@@ -62,44 +69,52 @@ def get_user_data(data):
     return "accept"
 
 
-def add_iot_keys(data):
-    status = "accept"
+def add_iot_device(data):
+    """
+    Adds an IoT device to the database
+    """
     try:
         public_key = data["iot_public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
         digest = {"uuid": hash_public_key(public_key)}
         database.insert_data(digest)
-        logger.info(f"New IoT public key inserted")
+        logger.info("New IoT public key inserted")
         add_report(f"New uuid added {digest}")
-        return status
+        return "accept"
     except Exception as e:
-        status = "reject"
         msg = f"Error {e} processing data\n{traceback.format_exc()}"
         logger.error(msg)
         response = requests.post(rollup_server + "/report", json={"payload": str2hex(msg)})
         logger.info(f"Received report status {response.status_code} body {response.content}")
+        return "reject"
 
 
 def update_data(data):
+    """
+    Updates data for an existing device
+    """
     result = WitnessProtocol.verify_signature(data["data"], data["signature"], data["public_key"])
     if result:
-        logger.info("Result is true")
+        status = "accept"
+        logger.info("Signature verification confirmed")
         public_key = data["public_key"].decode("utf-8").replace("\n", "\\n").encode("utf-8")
         digest = hash_public_key(public_key)
         logger.info(f"Digest {digest}")
         device = database.get_data(digest)
         if device:
             data_dict = json.loads(data["data"])
-            logger.info(f"Data dict {data_dict}")
             database.update_data(digest, data_dict)
             add_report("Data updated")
-            return "accept"
     else:
+        status = "reject"
         logger.info("Signature not valid")
         add_report("Signature verification failed")
-        return "reject"
+    return status
 
 
 def handle_advance(data):
+    """
+    Handles an advance request
+    """
     logger.info(f"Received advance request data {data}")
     status = "accept"
     try:
@@ -108,12 +123,11 @@ def handle_advance(data):
         for key, value in input_data.items():
             data[key] = base64.b64decode(value)
         if "iot_public_key" in data:
-            logger.info("Inside iot public data")
-            add_iot_keys(data)
+            logger.info("Adding new IoT device")
+            add_iot_device(data)
         elif "public_key" in data:
+            logger.info("Updating data for existing device")
             update_data(data)
-            logger.info(f"HTTP rollup_server url is {rollup_server}")
-
             logger.info(f"Adding notice with payload: '{input_data}'")
             response = requests.post(
                 rollup_server + "/notice", json={"payload": str2hex(str(input_data))}
@@ -129,6 +143,9 @@ def handle_advance(data):
 
 
 def handle_inspect(data):
+    """
+    Handles an inspect request
+    """
     try:
         payload = hex2str(data["payload"])
     except Exception as e:

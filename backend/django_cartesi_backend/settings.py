@@ -5,8 +5,6 @@ from pathlib import Path
 from django.conf import settings
 from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -73,8 +71,6 @@ WSGI_APPLICATION = "django_cartesi_backend.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -84,8 +80,6 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -112,8 +106,6 @@ AUTH_USER_MODEL = "users.NewUser"
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -124,12 +116,9 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
 STATIC_URL = "static/"
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -222,10 +211,10 @@ def load_environment_variables(env_file=None):
 file_path = os.path.join(BASE_DIR, ".env_dev")
 
 if os.path.exists(file_path):
-    print("Development")
+    # Developemnt
     env_vars = load_environment_variables(env_file=file_path)
 else:
-    print("Production")
+    # Prodcution
     env_vars = load_environment_variables()
 
 

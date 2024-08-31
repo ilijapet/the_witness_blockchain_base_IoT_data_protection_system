@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-from pathlib import Path
 from typing import Dict
 
 from django.conf import settings
@@ -90,13 +89,3 @@ class SCInterface(ContractUtilities, ContractInstatiator):
             {"from": self.account.address}
         )
         return tx_hash
-
-
-if __name__ == "__main__":
-    sc = SCInterface()
-    result = sc.w3.eth.get_code(sc.dapp_address)
-    if result.hex() == "0x":
-        print("Contract not deployed")
-    else:
-        print("Contract deployed")
-        print(result)

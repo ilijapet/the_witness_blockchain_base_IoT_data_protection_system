@@ -7,8 +7,8 @@ import random
 import requests
 from dotenv import load_dotenv
 
-from .env_var_managment import GetVar
-from .protocol import WitnessProtocol
+from utils.env_var_managment import GetVar
+from utils.protocol import WitnessProtocol
 
 load_dotenv()
 
@@ -48,7 +48,6 @@ class IotDataGenerator:
             "engine_status": random.choices([1, 1], weights=[2, 1], k=1)[0],
             "created_at": datetime.datetime.now().isoformat(),
         }
-        print(data)
         return json.dumps(data)
 
     def iot_data_generator(self, job=None):
